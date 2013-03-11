@@ -1,0 +1,89 @@
+/* fonts --------------------------------------------------------------------*/
+
+@import url(//fonts.googleapis.com/css?family=Lato:400,900);
+
+/* styles -------------------------------------------------------------------*/
+
+body {
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  color: #333;
+}
+
+h1 {
+  font-family: 'Lato', sans-serif;
+  font-weight: bold;
+}
+
+h2 {
+  color: #333;
+}
+
+h3 {
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  margin-top: 5px;
+  color: #666;
+}
+
+p {
+  font-size: larger;
+  color: #666;  
+}
+
+.navbar-static-top {
+  margin-bottom: 40px;
+}
+
+.nav li { 
+  text-transform: capitalize;  
+}
+
+.btn-large {
+  margin-top: 12px;
+  font-size: 24px;
+}
+
+.bignum {
+  float:left;
+  margin-right: 20px;
+  font-size: 60px;
+  font-weight: bold;
+  line-height: 50px;
+  color: #666;    
+  display: inline-block;    
+  vertical-align: top;
+}
+
+.step {
+  padding-top: 20px;
+  clear: both;
+}
+
+.step + div, .step + p, .step + h1 {
+  margin-top: 20px;
+}
+
+.step + .step {
+  margin-top: 0px;
+}
+
+/* responsive styles --------------------------------------------------------*/
+
+/* Portrait tablet */
+@media (max-width: 979px) { 
+}
+ 
+/* Landscape phone */
+@media (max-width: 767px) {  
+}
+ 
+/* Portrait phone */
+@media (max-width: 479px) {
+  .hero-unit {
+    background-color: #FFF;
+    padding: 0;
+    margin: 10 0;
+  }
+}
+

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {{ styles }}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+
+    <!-- top navigation bar -->
+
+    <div class="navbar navbar-static-top">
+      <div class="navbar-inner">
+        <div id="main-nav"></div>
+      </div>
+    </div>
+
+    <!-- content -->
+
+    <div class="container">
+      <div class="hero-unit">
+        <div class="row">
+          <div class="span4">
+            <h1>A&nbsp;Simple Website</h1>
+          </div>
+          <div class="span6">
+            <h3> This multi-page website is brought to you by <a href="https://www.backlift.com">Backlift</a> and <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a></h3>
+            <a href="/pages/adding_pages_1.html" class="btn btn-primary btn-large">Add a New Page <b>&rarr;</b></a>
+          </div>
+        </div>
+      </div>      
+    </div>   
+
+     
+      <script>
+      function updateQuotes(data) {
+       for (ticker in quote) {
+        var symbol = quote[ticker];
+        document.write('<div>Price of ' + ticker + ' is ' + symbol['Last'] + '</div>');
+       }
+      }
+     </script>
+ 
+      <script src="http://feeds.financialcontent.com/*****/JSQuote?Ticker=YHOO+AAPL+MSFT"></script>
+
+    {{ scripts }}
+  </body>
+</html>

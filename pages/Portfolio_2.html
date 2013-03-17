@@ -2,59 +2,138 @@
 <html>
   <head>
     {{ styles }}
+     <!-- Le styles -->
+   <!--  <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">    
+    <link href="assets/css/custom.css" rel="stylesheet"> -->
+
+    <meta charset="utf-8">
+    <title>NSS Project: Viraj's Equity Research App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="Stock research using Yahoo! Finance data" content="">
+    <meta name="Viraj Parikh" content="">
+
+        <!-- choose a theme file -->
+    <link rel="stylesheet" href="../assets/css/tablesorter_themes/blue/style.css">
+    
+    <!-- load jQuery and tablesorter scripts -->
+    <script type="text/javascript" src="../assets/js/jquery.tablesorter.js"></script>
+  
+    
   </head>
+  
   <body>
 
     <!-- top navigation bar -->
-
     <div class="navbar navbar-static-top">
       <div class="navbar-inner">
         <div id="main-nav"></div>
       </div>
     </div>
 
-    <!-- content -->
+    <!-- top portfolio buttons -->
 
-    <div class="container">
-      <h1> Adding Pages </h1>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="nav-collapse collapse">
+             <ul class="pull-right">
+              <a id="createPortfolioBtn" href="#portfolioModal" role="button" class="btn btn-success" data-toggle="modal">Create Portfolio</a>
+              <a id="updatePortfolioBtn" href="#" role="button" class="btn btn-info" data-toggle="modal">Update Portfolio</a>
+              <a id="deletePortfolioBtn" href="#" role="button" class="btn btn-danger">Delete Portfolio</a>
+            </ul>
 
-      <div class="step">
-        <div class="row">
-          <div class="span1"><span class='bignum'>1.</span></div>
-          <div class="span8">
-            <p><b>Find this web site's files on your computer</b></p>
-            <p>They will be in your Dropbox folder under <code>Apps/Backlift/</code></p>
-          </div>
+          </div><!--/.nav-collapse -->
         </div>
       </div>
-
-      <div class="step">
-        <div class="row">
-          <div class="span1"><span class='bignum'>2.</span></div>
-          <div class="span8">
-            <p><b>Create a new .html file in the /pages folder</b></p>
-            <p>The easiest way is to copy the <code>/pages/blank_page_2.html</code> file and rename it. </p>
-            <p>The new page will automatically be detected and added to the navigation menu. All numbers and underscores will be stripped out of the filename in order to create the link text.</p>
-            <p>If you need menu items to be ordered a particular way, put a number in the filename. For example: services_1.html, contact_2.html, about_3.html.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="step">
-        <div class="row">
-          <div class="span1"><span class='bignum'>3.</span></div>
-          <div class="span8">
-            <p><b>Make some changes!</b></p>
-            <p>Try making some changes to your new file. Your page will refresh automatically as you work.</p>
-          </div>
-        </div>
-      </div>
-      <p>Next, for a peak under the hood, check out the <code>/config.yml</code> file.</p>
-
     </div>
 
-    {{ scripts }}
-    <script src="assets/js/pages/portfolio-admin/main.js"></script>
+    <div class="container">
+
+      <div id="alert"></div>
+
+      <!-- <div class="alert alert-success alert-text">Scores successfully updated! <a class="close" data-dismiss="alert" href="#">&times;</a></div> -->
+
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">        
+
+        <div class="text-center">
+          <h2>Stock Portfolio</h2>
+           
+          <table id="stockTable" class="table table-striped tablesorter">
+            <thead>
+              <tr>
+                <th>Ticker</th>
+                <th>Company</th>
+                <th>Mkt Cap</th>
+                <th>Fwd P/Earnings</th>
+                <th>P/Book Value</th>
+                <th>ST Momentum</th>
+                <th>LT Momentum</th>
+              </tr>
+            </thead>
+            <tbody>              
+              <!-- Table rows & data added by js function addStocksToTable -->
+            </tbody>
+          </table>
+
+        </div><!-- /.text-center -->
+
+        <!-- ADD TICKER MODAL
+        ================================ -->
+
+        <div id="portfolioModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Create Your Portfolio<small>Input your stock tickers here</small></h3>
+          </div>
+          <div class="modal-body">
+
+            <form id="addTickerForm" class="form-horizontal">
+              <div class="control-group">
+                <label class="control-label" for="Name">Portfolio:</label>
+                <div class="controls">
+                  <input type="text" id="teamName" class="team_inputs" name="Portfolio Name" placeholder="Portfolio Name" required>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label class="control-label" for="tickers">Tickers:</label>
+                <div class="controls">
+                  <input type="text" id="firstName" class="team_inputs" name="firstName" placeholder="Tickers (separated by spaces)" required>
+                </div>
+              </div>
+            <form>
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn" type="reset">Clear</button>
+            <button id="register" class="btn btn-info" data-dismiss="modal" aria-hidden="true" onclick="addTicker()">Add Stock</button>
+            <button id="register" class="btn btn-success" data-dismiss="modal" aria-hidden="true" onclick="addPortfolio()">Add Portfolio</button>
+          </div>
+        </div>
+
+        
+           
+           <script>
+              $(document).ready(function() {
+                    $("#stockTable").tablesorter(); 
+                } 
+            ); 
+            </script>
+
+           {{ scripts }}
+    
   </body>
+
+
 </html>
+
+
+  
+

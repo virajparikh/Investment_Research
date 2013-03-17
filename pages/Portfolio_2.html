@@ -16,8 +16,8 @@
         <!-- choose a theme file -->
     <link rel="stylesheet" href="../assets/css/tablesorter_themes/blue/style.css">
     
-    <!-- load jQuery and tablesorter scripts -->
-    <script type="text/javascript" src="../assets/js/jquery.tablesorter.js"></script>
+    
+    
   
     
   </head>
@@ -120,14 +120,15 @@
 
         
            
+           
+
+           {{ scripts }}
+          <!--<script type="text/javascript" src="../assets/js/jquery.tablesorter.js"></script>-->
            <script>
               $(document).ready(function() {
                     $("#stockTable").tablesorter(); 
-                } 
-            ); 
+              }); 
             </script>
-
-           {{ scripts }}
     
   </body>
 

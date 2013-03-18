@@ -10,6 +10,8 @@ Also incorporating Stocktwits api to feed latest thoughts on stocks of interest 
 
 Finally, click in the Investor Education link for websites and books that will make any individual invest and trade more wisely.
 
+
+
 After Week1 1:
 Investment research website and app.  Project begun in Nashville Software School.
 

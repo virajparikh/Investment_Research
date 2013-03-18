@@ -5,7 +5,7 @@ $(document).ready(function() {
 		stock.id = stock.symbol;
 		stock.ForwardPE = sdo.calcForwardPE();
 		stock.PriceToBook = sdo.calcPriceToBook();
-		stock.stMomentum = sdo.calcSTMomentum(stock);
+		stock.stMomentum = sdo.calcSTMomentum();
 		stock.ltMomentum = sdo.calcLTMomentum();
 	};
 
@@ -70,7 +70,7 @@ $(document).ready(function() {
 	    };
 
 	    var space = ' ';
-	    var stocks = strStocks.replace(/,/g, space).replace(/;/g, space).split(' ');
+	    var stocks = strStocks.replace(/,/g, space).replace(/;/g, space).split(' ');  //replace all commas and semicolons with spaces (g = global)
 
 	    for (var i = 0; i < stocks.length; i++) {
 
@@ -144,16 +144,28 @@ $(document).ready(function() {
 
 
 	// BUTTON CLICKS 
-	$("#show").click(function(){
+	
+	$("#addPortfolioBtn").click(function(){
+		// this is the hardcoded bit you want to switch out w/ your UI
+		//var portfolio = { 
+		//		name: "viraj", 
+		//		stocks: ['YHOO', 'EBAY', 'GS', 'MSFT', 'AAPL'] 
+		//};
+		// END
+		var portfolio = createPortfolioFromInput($("#portfolioName").val(), $("#tickers").val());
+		createPortfolio(portfolio);
+	});
+	
+	$("#addPortfolioBtn").click(function(){
 		// hardcoded
-		var name = "viraj";
+		//var name = "viraj";
 		//end
-		// var name = $("#portfolio").val();
+		var name = $("#portfolio").val();
 		getAndShowPortfolio(name);
 	});
 
 	$("#editPortfolio").click(function(){
-		// this is the hardcoded bit you want to switch out w/ your UI
+		// this is the hardcoded but you want to switch out w/ your UI
 		var portfolio = { 
 				name: "viraj", 
 				stocks: ['GOOG', 'EBAY', 'GS', 'MSFT', 'AAPL'] 
@@ -163,16 +175,6 @@ $(document).ready(function() {
 		editPortfolio(portfolio);
 	});
 
-	$("#createPortfolio").click(function(){
-		// this is the hardcoded bit you want to switch out w/ your UI
-		var portfolio = { 
-				name: "viraj", 
-				stocks: ['YHOO', 'EBAY', 'GS', 'MSFT', 'AAPL'] 
-		};
-		// END
-		// var portfolio = createPortfolioFromInput($("#portfolioName").val(), $("#tickers").val());
-		createPortfolio(portfolio);
-	});
 
 	$("#delete, #deletePortfolioBtn").click(function(){
 		// this is the hardcoded bit you want to switch out w/ your UI

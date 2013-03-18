@@ -15,10 +15,7 @@
 
         <!-- choose a theme file -->
     <link rel="stylesheet" href="../assets/css/tablesorter_themes/blue/style.css">
-    
-    
-    
-  
+
     
   </head>
   
@@ -64,6 +61,14 @@
 
         <div class="text-center">
           <h2>Stock Portfolio</h2>
+          <div class="nav-collapse collapse">
+             <ul class="pull-right">
+              <a id="createPortfolioBtn" href="#portfolioModal" role="button" class="btn btn-success" data-toggle="modal">Create Portfolio</a>
+              <a id="updatePortfolioBtn" href="#" role="button" class="btn btn-info" data-toggle="modal">Update Portfolio</a>
+              <a id="deletePortfolioBtn" href="#" role="button" class="btn btn-danger">Delete Portfolio</a>
+            </ul>
+
+          </div><!--/.nav-collapse -->
            
           <table id="stockTable" class="table table-striped tablesorter">
             <thead>
@@ -98,29 +103,25 @@
               <div class="control-group">
                 <label class="control-label" for="Name">Portfolio:</label>
                 <div class="controls">
-                  <input type="text" id="teamName" class="team_inputs" name="Portfolio Name" placeholder="Portfolio Name" required>
+                  <input type="text" id="portfolioInput" class="stockInputs" name="Portfolio Name" placeholder="Portfolio Name" required>
                 </div>
               </div>
 
               <div class="control-group">
                 <label class="control-label" for="tickers">Tickers:</label>
                 <div class="controls">
-                  <input type="text" id="firstName" class="team_inputs" name="firstName" placeholder="Tickers (separated by spaces)" required>
+                  <input type="text" id="tickerInput" class="stockInputs" name="Tickers" placeholder="Tickers (separated by spaces)" required>
                 </div>
               </div>
             <form>
 
           </div>
           <div class="modal-footer">
-            <button class="btn" type="reset">Clear</button>
-            <button id="register" class="btn btn-info" data-dismiss="modal" aria-hidden="true" onclick="addTicker()">Add Stock</button>
-            <button id="register" class="btn btn-success" data-dismiss="modal" aria-hidden="true" onclick="addPortfolio()">Add Portfolio</button>
+            <button id="clearBtn" class="btn" type="reset">Clear</button>
+            <button id="addPortfolioBtn" class="btn btn-success" data-dismiss="modal" aria-hidden="true">Add Portfolio</button>
           </div>
         </div>
 
-        
-           
-           
 
            {{ scripts }}
           <!--<script type="text/javascript" src="../assets/js/jquery.tablesorter.js"></script>-->

@@ -3,7 +3,7 @@ Investment_Research
 
 After Week 2:
 -------------
-Prior week, the data gathering from Yahoo Finance was very manually intensive.  Now it is more automated, and the data is more current. Instead of saving the data in JSON a file, we now only save the portfolio of stock tickers in a JSON file.  Through an Ajax call, we can now pull down the most updated data from Yahoo Finance.
+In the prior week, the data gathering from Yahoo Finance was very manually intensive.  Now it is more automated, and the data is more current. Instead of saving the data in JSON a file, we now only save the portfolio of stock tickers in a JSON file.  Through an Ajax call, we can now pull down the most updated data from Yahoo Finance.
 
 The portfolio page is here: https://investmentproject-jarus.backliftapp.com/pages/Portfolio_2.html
 

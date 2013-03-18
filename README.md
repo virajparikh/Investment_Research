@@ -12,7 +12,8 @@ Finally, click in the Investor Education link for websites and books that will m
 
 
 
-After Week1 1:
+
+After Week 1:
 Investment research website and app.  Project begun in Nashville Software School.
 
 Backlift url: https://investmentproject-jarus.backliftapp.com/

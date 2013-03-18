@@ -1,3 +1,4 @@
+$(document).ready(function() {
 
       $("#go").on("click", function(){
         $("#stocktwits-widget-news").html("");
@@ -5,7 +6,7 @@
             container: 'stocktwits-widget-news',
             symbol: $("#ticker").val(),
             width: '300',
-            height: '300',
+            height: '600',
             limit: '15',
             scrollbars: 'true',
             streaming: 'true',
@@ -25,4 +26,4 @@
               }
           });
       });
-  
+  })

@@ -12,11 +12,11 @@ $(document).ready(function() {
 	var createYQLURL = function(portfolio){
 	    var baseYQLURL = 'http://query.yahooapis.com/v1/public/yql?env=http%3A%2F%2Fdatatables.org%2Falltables.env&format=json&q=';
 		var yqlQuery = 'select * from yahoo.finance.quotes where symbol in (';
-	    for( var i = 0; i < portfolio.stocks.length; i++){
-	        yqlQuery += '"' + portfolio.stocks[i] + '"';
-	        yqlQuery += i === (portfolio.stocks.length - 1) ? "" : ",";
-	    }
-	    yqlQuery += ')';
+		    for( var i = 0; i < portfolio.stocks.length; i++){
+		        yqlQuery += '"' + portfolio.stocks[i] + '"';
+		        yqlQuery += i === (portfolio.stocks.length - 1) ? "" : ",";
+		    }
+		    yqlQuery += ')';
 
 	    var yqlURL = baseYQLURL + encodeURI(yqlQuery);
 	    return yqlURL;
@@ -32,8 +32,8 @@ $(document).ready(function() {
 	   			$("#tickers").val(portfolio.stocks.join(' '));
 	   		}
 	   	});
-
 	};
+
 	var getAndShowPortfolio = function(name){
 		$.ajax({
 			url: '/backliftapp/portfolio/' + name,
@@ -57,36 +57,28 @@ $(document).ready(function() {
 					processStock(stock);
 					addStocksToTable(stock);				
 				}
-
 			} // End success
 		}); // End .ajax()
 	};
 
 	var createPortfolioFromInput = function (name, strStocks) {
-
 	    var portfolio = {
 	        name: name,
 	        stocks: [ ]
 	    };
-
 	    var space = ' ';
 	    var stocks = strStocks.replace(/,/g, space).replace(/;/g, space).split(' ');  //replace all commas and semicolons with spaces (g = global)
+		    for (var i = 0; i < stocks.length; i++) {
 
-	    for (var i = 0; i < stocks.length; i++) {
-
-	        if (stocks[i]) {
-	            portfolio.stocks.push(stocks[i]);
-	        }
-
-	    }
-
-	    return portfolio;
-	}
+		        if (stocks[i]) {
+		            portfolio.stocks.push(stocks[i]);
+		        }
+		    }
+		    return portfolio;
+	};
 
 	var createPortfolio = function(portfolio){
-
 		portfolio.id = portfolio.name;
-
 		$.ajax({
 			url: '/backliftapp/portfolio/',
 			type: "POST",
@@ -111,7 +103,6 @@ $(document).ready(function() {
 	};
 
 	var	editPortfolio = function(portfolio){
-
 		$.ajax({
 			url: '/backliftapp/portfolio/' + portfolio.name,
 			type: "PUT",
@@ -124,9 +115,7 @@ $(document).ready(function() {
 	};
 
 	var addStocksToTable = function(stock) {
-
       $("<tr class='ticker' id='" + stock.id + "'>" +
-        
         "<td id='ticker'>" + stock.id + "</td>" +
         "<td id='name'>" + stock.Name + "</td>" +
         "<td id='mktcap'>" + stock.MarketCapitalization + "</td>" +
@@ -137,15 +126,23 @@ $(document).ready(function() {
         "<td>" + "<div class='btn-group'>" + "<a class='btn btn-small btn-inverse dropdown-toggle' data-toggle='dropdown' href='#'> Edit <span class='caret'></span></a>" + "<ul class='dropdown-menu'>" + 
           "<li>" + "<a href='#editTeam' data-toggle='modal'><i class='icon-edit'></i> Edit</a>" + "</li>" +
           "<li class='divider'>" + "</li>" +
-          "<li>" + "<a href='#deleteConfirm' data-toggle='modal' onclick='deleteTeam(\"" + stock.id + "\")'><i class='icon-remove'></i> Delete</a>" + "</li>" + 
+          "<li>" + "<a href='#deleteConfirm' data-toggle='modal' onclick='deleteTicker(\"" + stock.id + "\")'><i class='icon-remove'></i> Delete</a>" + "</li>" + 
         "</ul>" + "</div>" + "</td>" +
         "</tr>").appendTo('#stockTable tbody');
         }  
 
 
 	// BUTTON CLICKS 
-	
-	$("#addPortfolioBtn").click(function(){
+
+	$("#").click(function(){  // is this a click, or does this load on document ready?
+		// hardcoded
+		//var name = "viraj";
+		//end
+		var name = $("#portfolio").val();
+		getAndShowPortfolio(name);
+	});
+
+	$("#createPortfolioBtn").click(function(){
 		// this is the hardcoded bit you want to switch out w/ your UI
 		//var portfolio = { 
 		//		name: "viraj", 
@@ -155,30 +152,22 @@ $(document).ready(function() {
 		var portfolio = createPortfolioFromInput($("#portfolioName").val(), $("#tickers").val());
 		createPortfolio(portfolio);
 	});
-	
-	$("#addPortfolioBtn").click(function(){
-		// hardcoded
-		//var name = "viraj";
-		//end
-		var name = $("#portfolio").val();
-		getAndShowPortfolio(name);
-	});
 
-	$("#editPortfolio").click(function(){
+	$("#editPortfolioBtn").click(function(){
 		// this is the hardcoded but you want to switch out w/ your UI
-		var portfolio = { 
-				name: "viraj", 
-				stocks: ['GOOG', 'EBAY', 'GS', 'MSFT', 'AAPL'] 
-		};
+		//var portfolio = { 
+		//		name: "viraj", 
+		//		stocks: ['GOOG', 'EBAY', 'GS', 'MSFT', 'AAPL'] 
+		//};
 		// END
-		// var portfolio = createPortfolioFromInput($("#portfolioName").val(), $("#tickers").val());
+		var portfolio = createPortfolioFromInput($("#portfolioName").val(), $("#tickers").val());
 		editPortfolio(portfolio);
 	});
 
 
-	$("#delete, #deletePortfolioBtn").click(function(){
+	$("#deletePortfolioBtn").click(function(){
 		// this is the hardcoded bit you want to switch out w/ your UI
-		var name = "viraj"
+		//var name = "viraj"
 		// END
 		// var name = $("#portfolioNameToBeDeleted").val();
 		deletePortfolio(name);

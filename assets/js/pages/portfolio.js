@@ -11,6 +11,7 @@ $(document).ready(function() {
 
 	var createYQLURL = function(portfolio){
 	    var baseYQLURL = 'http://query.yahooapis.com/v1/public/yql?env=http%3A%2F%2Fdatatables.org%2Falltables.env&format=json&q=';
+
 		var yqlQuery = 'select * from yahoo.finance.quotes where symbol in (';
 		    for( var i = 0; i < portfolio.stocks.length; i++){
 		        yqlQuery += '"' + portfolio.stocks[i] + '"';
@@ -20,33 +21,6 @@ $(document).ready(function() {
 
 	    var yqlURL = baseYQLURL + encodeURI(yqlQuery);
 	    return yqlURL;
-	};
-
-	var getAndShowPortfolio = function(name){
-		$.ajax({
-			url: '/backliftapp/portfolio/' + name,
-			type: "GET",
-			dataType: "json",
-			success: function(portfolio) {
-	   			showPortfolio(portfolio);
-	   		}
-	   	});
-	};
-
-	var showPortfolio = function(portfolio) {   
-		var yqlurl = createYQLURL(portfolio);
-		$.ajax({
-			url: yqlurl,
-			type: "GET",	
-			dataType: "json",
-			success: function(stocks.json) {
-				for (var i = 0; i < numStocks; i++) {
-					var stock = stocks.json.query.results.quote[i]; //digs into the layers of the json file and returns only the relevant stock data
-					processStock(stock);
-					addStocksToTable(stock);				
-				}
-			} // End success
-		}); // End .ajax()
 	};
 
 	var createPortfolioFromInput = function (name, strStocks) {
@@ -65,14 +39,41 @@ $(document).ready(function() {
 		    return portfolio;
 	};
 
+	var showPortfolio = function(portfolio) {   
+		var yqlurl = createYQLURL(portfolio);
+		$.ajax({
+			url: yqlurl,
+			type: "GET",	
+			dataType: "json",
+			success: function(stocksjson) {
+				for (var i = 0; i < numStocks; i++) {
+					var stock = stocksjson.query.results.quote[i]; //digs into the layers of the json file and returns only the relevant stock data
+					processStock(stock);
+					addStocksToTable(stock);				
+				}
+			} // End success
+		}); // End .ajax()
+	};
+
 	var createPortfolio = function(portfolio){
 		portfolio.id = portfolio.name;
 		$.ajax({
-			url: '/backliftapp/portfolio/',
+			url: '/backliftapp/portfolio/' + name,  //viraj: added '+ name'
 			type: "POST",
 			data: portfolio,
 			dataType: "json",
 			success: function() {
+	   			showPortfolio(portfolio);
+	   		}
+	   	});
+	};
+
+	var getAndShowPortfolio = function(name){
+		$.ajax({
+			url: '/backliftapp/portfolio/' + name,
+			type: "GET",
+			dataType: "json",
+			success: function(portfolio) {
 	   			showPortfolio(portfolio);
 	   		}
 	   	});
@@ -148,39 +149,36 @@ $(document).ready(function() {
 
 	// BUTTON CLICKS 
 
-	$("getPortfolioBtn").click(function(){  // is this a click, or does this load on document ready?
-		// hardcoded
+	
+	$("#createPortfolioBtn").click(function(){
+		//var portfolio = { 
+		//		name: "viraj", 
+		//		stocks: ['YHOO', 'EBAY', 'GS', 'MSFT', 'AAPL'] 
+		//};
+		// END
+		var portfolio = createPortfolioFromInput($("#portfolioName").val(), $("#tickerInput").val());
+		createPortfolio(portfolio);
+	});
+
+	$("#getPortfolioBtn").click(function(){  // is this a click, or does this load on document ready?
 		//var name = "viraj";
 		//end
 		var name = $("#portfolio").val();
 		getAndShowPortfolio(name);
 	});
 
-	$("#createPortfolioBtn").click(function(){
-		// this is the hardcoded bit you want to switch out w/ your UI
-		//var portfolio = { 
-		//		name: "viraj", 
-		//		stocks: ['YHOO', 'EBAY', 'GS', 'MSFT', 'AAPL'] 
-		//};
-		// END
-		var portfolio = createPortfolioFromInput($("#portfolioName").val(), $("#tickers").val());
-		createPortfolio(portfolio);
-	});
-
 	$("#editPortfolioBtn").click(function(){
-		// this is the hardcoded but you want to switch out w/ your UI
 		//var portfolio = { 
 		//		name: "viraj", 
 		//		stocks: ['GOOG', 'EBAY', 'GS', 'MSFT', 'AAPL'] 
 		//};
 		// END
-		var portfolio = createPortfolioFromInput($("#portfolioName").val(), $("#tickers").val());
+		var portfolio = createPortfolioFromInput($("#portfolioName").val(), $("#tickerInput").val());
 		editPortfolio(portfolio);
 	});
 
 
 	$("#deletePortfolioBtn").click(function(){
-		// this is the hardcoded bit you want to switch out w/ your UI
 		//var name = "viraj"
 		// END
 		// var name = $("#portfolioNameToBeDeleted").val();

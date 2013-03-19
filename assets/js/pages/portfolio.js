@@ -22,18 +22,6 @@ $(document).ready(function() {
 	    return yqlURL;
 	};
 
-	var getPortfolioForEdit = function(name){
-	$.ajax({
-			url: '/backliftapp/portfolio/' + name,
-			type: "GET",
-			dataType: "json",
-			success: function(portfolio) {
-	   			$("#name").html(portfolio.name);
-	   			$("#tickers").val(portfolio.stocks.join(' '));
-	   		}
-	   	});
-	};
-
 	var getAndShowPortfolio = function(name){
 		$.ajax({
 			url: '/backliftapp/portfolio/' + name,
@@ -51,9 +39,9 @@ $(document).ready(function() {
 			url: yqlurl,
 			type: "GET",	
 			dataType: "json",
-			success: function(stocksjson) {
+			success: function(stocks.json) {
 				for (var i = 0; i < numStocks; i++) {
-					var stock = stocksjson.query.results.quote[i]; //digs into the layers of the json file and returns only the relevant stock data
+					var stock = stocks.json.query.results.quote[i]; //digs into the layers of the json file and returns only the relevant stock data
 					processStock(stock);
 					addStocksToTable(stock);				
 				}
@@ -90,16 +78,16 @@ $(document).ready(function() {
 	   	});
 	};
 
-	var deletePortfolio = function(name) {
-		// Get teams from database
-		$.ajax({
+	var getPortfolioForEdit = function(name){
+	$.ajax({
 			url: '/backliftapp/portfolio/' + name,
-			type: "DELETE",
+			type: "GET",
 			dataType: "json",
-			success: function(data) {
-				alert('deleted portfolio: ' + name);
-			} // End success
-		}); // End .ajax()
+			success: function(portfolio) {
+	   			$("#name").html(portfolio.name);
+	   			$("#tickers").val(portfolio.stocks.join(' '));
+	   		}
+	   	});
 	};
 
 	var	editPortfolio = function(portfolio){
@@ -114,27 +102,53 @@ $(document).ready(function() {
 	   	});
 	};
 
+	var deletePortfolio = function(name) {
+		// Get teams from database
+		$.ajax({
+			url: '/backliftapp/portfolio/' + name,
+			type: "DELETE",
+			dataType: "json",
+			success: function(data) {
+				alert('deleted portfolio: ' + name);
+			} // End success
+		}); // End .ajax()
+	};
+
 	var addStocksToTable = function(stock) {
-      $("<tr class='ticker' id='" + stock.id + "'>" +
-        "<td id='ticker'>" + stock.id + "</td>" +
-        "<td id='name'>" + stock.Name + "</td>" +
-        "<td id='mktcap'>" + stock.MarketCapitalization + "</td>" +
-        "<td id='fwdPE'>" + stock.ForwardPE + "</td>" +
-        "<td id='priceToBook'>" + stock.PriceToBook + "</td>" +
-        "<td id='stMomentum'>" + stock.stMomentum + "</td>" +
-        "<td id='ltMomentum'>" + stock.ltMomentum + "</td>" +
-        "<td>" + "<div class='btn-group'>" + "<a class='btn btn-small btn-inverse dropdown-toggle' data-toggle='dropdown' href='#'> Edit <span class='caret'></span></a>" + "<ul class='dropdown-menu'>" + 
-          "<li>" + "<a href='#editTeam' data-toggle='modal'><i class='icon-edit'></i> Edit</a>" + "</li>" +
-          "<li class='divider'>" + "</li>" +
-          "<li>" + "<a href='#deleteConfirm' data-toggle='modal' onclick='deleteTicker(\"" + stock.id + "\")'><i class='icon-remove'></i> Delete</a>" + "</li>" + 
-        "</ul>" + "</div>" + "</td>" +
-        "</tr>").appendTo('#stockTable tbody');
-        }  
+      $('.stockTable').append(
+      		"<thead>
+              <tr>
+                <th>Ticker</th>
+                <th>Company</th>
+                <th>Mkt Cap</th>
+                <th>Fwd P/Earnings</th>
+                <th>P/Book Value</th>
+                <th>ST Momentum</th>
+                <th>LT Momentum</th>
+              </tr>
+            </thead> 
+            <tbody>" +
+		      	"<tr class='ticker' id='" + stock.id + "'>" +
+		        "<td id='ticker'>" + stock.id + "</td>" +
+		        "<td id='name'>" + stock.Name + "</td>" +
+		        "<td id='mktcap'>" + stock.MarketCapitalization + "</td>" +
+		        "<td id='fwdPE'>" + stock.ForwardPE + "</td>" +
+		        "<td id='priceToBook'>" + stock.PriceToBook + "</td>" +
+		        "<td id='stMomentum'>" + stock.stMomentum + "</td>" +
+		        "<td id='ltMomentum'>" + stock.ltMomentum + "</td>" +
+		        "<td>" + "<div class='btn-group'>" + "<a class='btn btn-small btn-inverse dropdown-toggle' data-toggle='dropdown' href='#'> Edit <span class='caret'></span></a>" + "<ul class='dropdown-menu'>" + 
+		          "<li>" + "<a href='#editTeam' data-toggle='modal'><i class='icon-edit'></i> Edit</a>" + "</li>" +
+		          "<li class='divider'>" + "</li>" +
+		          "<li>" + "<a href='#deleteConfirm' data-toggle='modal' onclick='deleteTicker(\"" + stock.id + "\")'><i class='icon-remove'></i> Delete</a>" + "</li>" + 
+		        "</ul>" + "</div>" + "</td>" +
+		        "</tr> +
+	        </tbody>");
+        };  
 
 
 	// BUTTON CLICKS 
 
-	$("#").click(function(){  // is this a click, or does this load on document ready?
+	$("getPortfolioBtn").click(function(){  // is this a click, or does this load on document ready?
 		// hardcoded
 		//var name = "viraj";
 		//end

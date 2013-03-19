@@ -1,0 +1,20 @@
+#leftTwits {
+	float: left;
+}
+
+#centerTwits {
+	float: left;
+}
+
+#ticker {
+  margin-top: 15px;
+  margin-left: 180px;
+}
+
+#go {
+	margin-top: 15px;
+}
+
+#stocktwits-widget-news {
+	margin-left: 180px;
+}

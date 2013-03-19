@@ -53,17 +53,18 @@
       <div class="hero-unit">        
 
         <div class="text-center">
+
           <h2 id="portfolioName">Stock Portfolio</h2>
           <div class="nav-collapse collapse">
              <ul class="pull-right">
-              <a id="editPortfolioModalBtn" href="#editPortfolioModal" role="button" class="btn btn-info" data-toggle="modal">Edit Portfolio</a>
+              <a id="getPortfolioBtn" role="button" class="btn btn-info">View Portfolio</a>
+              <a id="editPortfolioModalBtn" href="#editPortfolioModal" role="button" class="btn btn-warning" data-toggle="modal">Edit Portfolio</a>
               <a id="deletePortfolioModalBtn" href="#deletePortfolioModal" role="button" class="btn btn-danger" data-toggle="modal">Delete Portfolio</a>
             </ul>
-
           </div><!--/.nav-collapse -->
            
-          <table id="stockTable" class="table table-striped tablesorter">
-            <thead>
+          <table class="stockTable table-striped tablesorter">
+            <!-- <thead>
               <tr>
                 <th>Ticker</th>
                 <th>Company</th>
@@ -73,10 +74,11 @@
                 <th>ST Momentum</th>
                 <th>LT Momentum</th>
               </tr>
-            </thead>
-            <tbody>              
-              <!-- Table rows & data added by js function addStocksToTable -->
-            </tbody>
+            </thead> -->
+            <!-- <tbody>              
+              Table rows & data added by js function addStocksToTable
+            </tbody> -->
+
           </table>
 
         </div><!-- /.text-center -->
@@ -147,7 +149,7 @@
           <div class="modal-footer">
             <button id="clearBtn" class="btn" type="reset">Clear</button>
             <button id="cancelBtn" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-            <button id="editPortfolioBtn" class="btn btn-info" data-dismiss="modal" aria-hidden="true">Edit Portfolio</button>
+            <button id="editPortfolioBtn" class="btn btn-warning" data-dismiss="modal" aria-hidden="true">Update Portfolio</button>
           </div>
         </div>
 

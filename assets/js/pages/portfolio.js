@@ -15,7 +15,7 @@ $(document).ready(function() {
 		var yqlQuery = 'select * from yahoo.finance.quotes where symbol in (';
 		    for( var i = 0; i < portfolio.stocks.length; i++){
 		        yqlQuery += '"' + portfolio.stocks[i] + '"';
-		        yqlQuery += i === (portfolio.stocks.length - 1) ? "" : ",";
+		        yqlQuery += i === (portfolio.stocks.length - 1) ? "" : ",";		        
 		    }
 		    yqlQuery += ')';
 
@@ -46,7 +46,7 @@ $(document).ready(function() {
 			type: "GET",	
 			dataType: "json",
 			success: function(stocksjson) {
-				for (var i = 0; i < numStocks; i++) {
+				for (var i = 0; i < stocksjson.query.count; i++) {
 					var stock = stocksjson.query.results.quote[i]; //digs into the layers of the json file and returns only the relevant stock data
 					processStock(stock);
 					addStocksToTable(stock);				
@@ -58,7 +58,7 @@ $(document).ready(function() {
 	var createPortfolio = function(portfolio){
 		portfolio.id = portfolio.name;
 		$.ajax({
-			url: '/backliftapp/portfolio/' + name,  //viraj: added '+ name'
+			url: '/backliftapp/portfolio',
 			type: "POST",
 			data: portfolio,
 			dataType: "json",
@@ -116,19 +116,7 @@ $(document).ready(function() {
 	};
 
 	var addStocksToTable = function(stock) {
-      $('.stockTable').append(
-      		"<thead>
-              <tr>
-                <th>Ticker</th>
-                <th>Company</th>
-                <th>Mkt Cap</th>
-                <th>Fwd P/Earnings</th>
-                <th>P/Book Value</th>
-                <th>ST Momentum</th>
-                <th>LT Momentum</th>
-              </tr>
-            </thead> 
-            <tbody>" +
+      $('#stockTable').append(      	
 		      	"<tr class='ticker' id='" + stock.id + "'>" +
 		        "<td id='ticker'>" + stock.id + "</td>" +
 		        "<td id='name'>" + stock.Name + "</td>" +
@@ -138,12 +126,12 @@ $(document).ready(function() {
 		        "<td id='stMomentum'>" + stock.stMomentum + "</td>" +
 		        "<td id='ltMomentum'>" + stock.ltMomentum + "</td>" +
 		        "<td>" + "<div class='btn-group'>" + "<a class='btn btn-small btn-inverse dropdown-toggle' data-toggle='dropdown' href='#'> Edit <span class='caret'></span></a>" + "<ul class='dropdown-menu'>" + 
-		          "<li>" + "<a href='#editTeam' data-toggle='modal'><i class='icon-edit'></i> Edit</a>" + "</li>" +
+		          "<li>" + "<a href='#editTicker' data-toggle='modal'><i class='icon-edit'></i> Edit</a>" + "</li>" +
 		          "<li class='divider'>" + "</li>" +
 		          "<li>" + "<a href='#deleteConfirm' data-toggle='modal' onclick='deleteTicker(\"" + stock.id + "\")'><i class='icon-remove'></i> Delete</a>" + "</li>" + 
 		        "</ul>" + "</div>" + "</td>" +
-		        "</tr> +
-	        </tbody>");
+		        "</tr>" 
+		    );
         };  
 
 
@@ -156,7 +144,7 @@ $(document).ready(function() {
 		//		stocks: ['YHOO', 'EBAY', 'GS', 'MSFT', 'AAPL'] 
 		//};
 		// END
-		var portfolio = createPortfolioFromInput($("#portfolioName").val(), $("#tickerInput").val());
+		var portfolio = createPortfolioFromInput($("#createPortfolioName").val(), $("#tickerInput").val());
 		createPortfolio(portfolio);
 	});
 
@@ -173,7 +161,7 @@ $(document).ready(function() {
 		//		stocks: ['GOOG', 'EBAY', 'GS', 'MSFT', 'AAPL'] 
 		//};
 		// END
-		var portfolio = createPortfolioFromInput($("#portfolioName").val(), $("#tickerInput").val());
+		var portfolio = createPortfolioFromInput($("#updatePortfolioName").val(), $("#tickerInput").val());
 		editPortfolio(portfolio);
 	});
 
@@ -184,53 +172,6 @@ $(document).ready(function() {
 		// var name = $("#portfolioNameToBeDeleted").val();
 		deletePortfolio(name);
 	});
-	//$("#process").click(processStocksFromFile);
-	
-	//$("#editPortfolioBtn").click(addStocksToTable);
-	
-
 
 }); // END DOC .READY() ========================================================= -->
 
-
-
-	// var showStocksInDatabase = function() {
-	// 	// Get YQL stock data from database
-	// 	$.ajax({
-	// 		url: '/backliftapp/stocks',
-	// 		type: "GET",
-	// 		dataType: "json",
-	// 		success: function(data) {
-	// 			var res = JSON.stringify(data, null, 2);  //why res?
-
-	// 			$("#json-content").html("<div> Number of Stocks: " + data.length + "</div><pre>" + res + "</pre>")
-
-	// 		} // End success
-	// 	}); // End .ajax()
-	// };
-
-	// var deleteStocksInDatabase = function() {
-	// 	// Get teams from database
-	// 	$.ajax({
-	// 		url: '/backliftapp/stocks',
-	// 		type: "GET",
-	// 		dataType: "json",
-	// 		success: function(data) {
-	// 			var showStocksWhenDone = _.after(data.length, showStocksInDatabase);
-
-	// 			for (var i = 0; i < data.length; i++) {
-	// 				var o = data[i];
-
-	// 				$.ajax({
-	// 					url: "/backliftapp/stocks/" + o.id,
-	// 					type: "DELETE",
-	// 					dataType: "json",
-	// 					success: function() {
-	// 						showStocksWhenDone();
-	// 					}
-	// 				}); // End .ajax()
-
-	// 			}
-	// 		} // End success
-	// 	}); // End .ajax()
-	// };

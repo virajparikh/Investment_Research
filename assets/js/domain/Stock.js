@@ -16,7 +16,7 @@
 			if ( price_GT_50Day_GT_200Day ) {
 				return "Positive ST Momentum"
 
-			} else if ( _50Day_GT_Price_GT_200Day || price_GT_50day_LT_200Day ){
+			} else if ( price_LT_50Day_GT_200Day || price_GT_50day_LT_200Day ){
 				return "Neutral ST Momentum"
 
 			} else if (price_LT_50day_LT_200Day) {
@@ -24,7 +24,7 @@
 
 			} else {
 				return "!! error in calculation !!"
-			}
+				}
 	};
     
     StockDomainObject.prototype.calcLTMomentum = function(){
@@ -36,7 +36,7 @@
 	};  
 
     StockDomainObject.prototype.calcForwardPE = function(){
-		return parseFloat(this.stock.LastTradePriceOnly, 10) / parseFloat(this.stock.EPSEstimateNextYear, 10);
+		return parseFloat(this.stock.LastTradePriceOnly, 2) / parseFloat(this.stock.EPSEstimateNextYear, 2);
     }
 	
 	StockDomainObject.prototype.calcPriceToBook = function(){

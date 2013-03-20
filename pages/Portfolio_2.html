@@ -63,8 +63,8 @@
             </ul>
           </div><!--/.nav-collapse -->
            
-          <table class="stockTable table-striped tablesorter">
-            <!-- <thead>
+          <table class="table-striped tablesorter">
+            <thead>
               <tr>
                 <th>Ticker</th>
                 <th>Company</th>
@@ -74,10 +74,10 @@
                 <th>ST Momentum</th>
                 <th>LT Momentum</th>
               </tr>
-            </thead> -->
-            <!-- <tbody>              
-              Table rows & data added by js function addStocksToTable
-            </tbody> -->
+            </thead> 
+            <tbody id="stockTable">              
+              <!-- Table rows & data added by js function addStocksToTable -->
+            </tbody>
 
           </table>
 
@@ -98,7 +98,7 @@
               <div class="control-group">
                 <label class="control-label" for="Name">Portfolio:</label>
                 <div class="controls">
-                  <input type="text" id="portfolioName" class="stockInputs" name="Portfolio Name" placeholder="Portfolio Name" required>
+                  <input type="text" id="createPortfolioName" class="stockInputs" name="Portfolio Name" placeholder="Portfolio Name" required>
                 </div>
               </div>
 
@@ -133,7 +133,7 @@
             <div class="control-group">
               <label class="control-label" for="Name">Portfolio:</label>
                 <div class="controls">
-                  <input type="text" id="portfolioName" class="stockInputs" name="Portfolio Name" placeholder="Portfolio Name" required>
+                  <input type="text" id="updatePortfolioName" class="stockInputs" name="Portfolio Name" placeholder="Portfolio Name" required>
                 </div>
             </div>
 

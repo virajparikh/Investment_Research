@@ -36,7 +36,7 @@
 	};  
 
     StockDomainObject.prototype.calcForwardPE = function(){
-		return parseFloat(this.stock.LastTradePriceOnly, 2) / parseFloat(this.stock.EPSEstimateNextYear, 2);
+		return parseFloat(this.stock.LastTradePriceOnly, 10) / parseFloat(this.stock.EPSEstimateNextYear, 10);
     }
 	
 	StockDomainObject.prototype.calcPriceToBook = function(){

@@ -54,7 +54,7 @@
 
         <div class="text-center">
 
-          <h2 id="portfolioName">Stock Portfolio</h2>
+          <h2 id="portfolioName">Portfolio Analysis</h2>
           <div class="nav-collapse collapse">
              <ul class="pull-right">
               <a id="getPortfolioBtn" role="button" class="btn btn-info">View Portfolio</a>
@@ -63,7 +63,7 @@
             </ul>
           </div><!--/.nav-collapse -->
            
-          <table class="table-striped tablesorter">
+          <table class="table table-striped tablesorter">
             <thead>
               <tr>
                 <th>Ticker</th>
@@ -192,12 +192,35 @@
         </div>
 
 
+        <!-- Portfolio List
+        ========================== -->
+        <br>
+        <br>
+
+        <div class="text-center">
+
+          <h3 id="portfolioName">All Portfolios Created</h3>
+           
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th></th>
+              </tr>
+            </thead> 
+            <tbody id="portfolioList">              
+              <!-- Portfolio list added by js function addPortfolioToTable -->
+            </tbody>
+          </table>
+        </div><!-- /.text-center -->
+
+
+
            {{ scripts }}
           <!--<script type="text/javascript" src="../assets/js/jquery.tablesorter.js"></script>-->
           
            <script>
               $(document).ready(function() {
-                    $("#stockTable").tablesorter(); 
+                    $(".tablesorter").tablesorter(); 
               }); 
           </script>
     

@@ -49,7 +49,7 @@ $(document).ready(function() {
 				for (var i = 0; i < stocksjson.query.count; i++) {
 					var stock = stocksjson.query.results.quote[i]; //digs into the layers of the json file and returns only the relevant stock data
 					processStock(stock);
-					addStocksToTable(stock);				
+					addStocksToTable(stock);			
 				}
 			} // End success
 		}); // End .ajax()
@@ -68,9 +68,9 @@ $(document).ready(function() {
 	   	});
 	};
 
-	var getAndShowPortfolio = function(name){
+	var getAndShowPortfolio = function(portfolio){
 		$.ajax({
-			url: '/backliftapp/portfolio/' + name,
+			url: '/backliftapp/portfolio/' + portfolio,
 			type: "GET",
 			dataType: "json",
 			success: function(portfolio) {
@@ -79,9 +79,9 @@ $(document).ready(function() {
 	   	});
 	};
 
-	var getPortfolioForEdit = function(name){
+	var getPortfolioForEdit = function(portfolio){
 	$.ajax({
-			url: '/backliftapp/portfolio/' + name,
+			url: '/backliftapp/portfolio/' + portfolio,
 			type: "GET",
 			dataType: "json",
 			success: function(portfolio) {
@@ -93,7 +93,7 @@ $(document).ready(function() {
 
 	var	editPortfolio = function(portfolio){
 		$.ajax({
-			url: '/backliftapp/portfolio/' + portfolio.name,
+			url: '/backliftapp/portfolio/' + portfolio,
 			type: "PUT",
 			data: portfolio,
 			dataType: "json",
@@ -103,17 +103,30 @@ $(document).ready(function() {
 	   	});
 	};
 
-	var deletePortfolio = function(name) {
+	var deletePortfolio = function(portfolio) {
 		// Get teams from database
 		$.ajax({
-			url: '/backliftapp/portfolio/' + name,
+			url: '/backliftapp/portfolio/' + portfolio,
 			type: "DELETE",
 			dataType: "json",
 			success: function(data) {
-				alert('deleted portfolio: ' + name);
+				alert('deleted portfolio: ' + portfolio);
 			} // End success
 		}); // End .ajax()
 	};
+
+	var deleteStock = function(name) {
+		// Get teams from database
+		$.ajax({
+			url: '/backliftapp/portfolio/' + portfolio/id,
+			type: "DELETE",
+			dataType: "json",
+			success: function(data) {
+				//alert('deleted portfolio: ' + name);
+			} // End success
+		}); // End .ajax()
+	};
+
 
 	var addStocksToTable = function(stock) {
       $('#stockTable').append(      	
@@ -125,18 +138,22 @@ $(document).ready(function() {
 		        "<td id='priceToBook'>" + stock.PriceToBook + "</td>" +
 		        "<td id='stMomentum'>" + stock.stMomentum + "</td>" +
 		        "<td id='ltMomentum'>" + stock.ltMomentum + "</td>" +
-		        "<td>" + "<div class='btn-group'>" + "<a class='btn btn-small btn-inverse dropdown-toggle' data-toggle='dropdown' href='#'> Edit <span class='caret'></span></a>" + "<ul class='dropdown-menu'>" + 
-		          "<li>" + "<a href='#editTicker' data-toggle='modal'><i class='icon-edit'></i> Edit</a>" + "</li>" +
-		          "<li class='divider'>" + "</li>" +
-		          "<li>" + "<a href='#deleteConfirm' data-toggle='modal' onclick='deleteTicker(\"" + stock.id + "\")'><i class='icon-remove'></i> Delete</a>" + "</li>" + 
-		        "</ul>" + "</div>" + "</td>" +
-		        "</tr>" 
+		        "<td id='deleteStockIcon'>" + "<a href='#deleteConfirm' data-toggle='modal' onclick='deleteStock(\"" + stock.id + "\")'><i class='icon-remove'></i> </a>" + "</td>" + "</tr>"  
 		    );
         };  
 
+    var addPortfolioToTable = function(portfolio) {
+      $('#portfolioList').append(      	
+	      	'<tr id="' + portfolio.id + '">' + '<td>' + portfolio.name + '</td>' + '<td>' + '<ul class="pull-right">' +
+              '<a id="getPortfolioBtn" role="button" class="btn btn-info">View Portfolio</a>' + ' ' +
+              '<a id="editPortfolioModalBtn" href="#editPortfolioModal" role="button" class="btn btn-warning" data-toggle="modal">Edit Portfolio</a>' + ' ' +
+              '<a id="deletePortfolioModalBtn" href="#deletePortfolioModal" role="button" class="btn btn-danger" data-toggle="modal">Delete Portfolio</a>' + "</ul>" + "</tr>"
+		        );
+  	};
+		        
+
 
 	// BUTTON CLICKS 
-
 	
 	$("#createPortfolioBtn").click(function(){
 		//var portfolio = { 
@@ -146,6 +163,7 @@ $(document).ready(function() {
 		// END
 		var portfolio = createPortfolioFromInput($("#createPortfolioName").val(), $("#tickerInput").val());
 		createPortfolio(portfolio);
+		addPortfolioToTable(portfolio);  //viraj: added this function
 	});
 
 	$("#getPortfolioBtn").click(function(){  // is this a click, or does this load on document ready?
@@ -171,6 +189,13 @@ $(document).ready(function() {
 		// END
 		// var name = $("#portfolioNameToBeDeleted").val();
 		deletePortfolio(name);
+	});
+
+	$("#").click(function(){
+		//var name = "viraj"
+		// END
+		// var name = $("#portfolioNameToBeDeleted").val();
+		deleteStock(id);
 	});
 
 }); // END DOC .READY() ========================================================= -->

@@ -55,13 +55,13 @@
         <div class="text-center">
 
           <h2 id="portfolioName">Portfolio Analysis</h2>
-          <div class="nav-collapse collapse">
+          <!-- <div class="nav-collapse collapse">
              <ul class="pull-right">
               <a id="getPortfolioBtn" role="button" class="btn btn-info">View Portfolio</a>
               <a id="editPortfolioModalBtn" href="#editPortfolioModal" role="button" class="btn btn-warning" data-toggle="modal">Edit Portfolio</a>
               <a id="deletePortfolioModalBtn" href="#deletePortfolioModal" role="button" class="btn btn-danger" data-toggle="modal">Delete Portfolio</a>
             </ul>
-          </div><!--/.nav-collapse -->
+          </div><!--/.nav-collapse --> 
            
           <table class="table table-striped tablesorter">
             <thead>
@@ -105,7 +105,7 @@
               <div class="control-group">
                 <label class="control-label" for="tickers">Tickers:</label>
                 <div class="controls">
-                  <input type="text" id="tickerInput" class="stockInputs" name="Tickers" placeholder="Tickers (separated by spaces)" required>
+                  <input type="text" id="addTickerInput" class="stockInputs" name="Tickers" placeholder="Tickers (separated by spaces)" required>
                 </div>
               </div>
             </form>
@@ -140,7 +140,7 @@
               <div class="control-group">
                 <label class="control-label" for="tickers">Tickers:</label>
                 <div class="controls">
-                  <input type="text" id="tickerInput" class="stockInputs" name="Tickers" placeholder="Tickers (separated by spaces)" required>
+                  <input type="text" id="updateTickerInput" class="stockInputs" name="Tickers" placeholder="Tickers (separated by spaces)" required>
                 </div>
               </div>
           </form>
@@ -177,7 +177,7 @@
 
         <!-- DELETE INDIVIDUAL TICKER CONFIRMATION MODAL
         ================================ -->
-        <div id="deleteConfirm" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div id="deleteStockModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="myModalLabel">Delete this stock?</h3>
@@ -194,7 +194,6 @@
 
         <!-- Portfolio List
         ========================== -->
-        <br>
         <br>
 
         <div class="text-center">

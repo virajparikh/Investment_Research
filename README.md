@@ -1,6 +1,20 @@
 Investment_Research
 ===================
 
+After Week 2.5:
+----------------
+https://investmentproject-jarus.backliftapp.com/pages/Portfolio_2.html
+
+https://investmentproject-jarus.backliftapp.com/pages/StockTwits_3.html
+
+Create Portfolio functioning properly.  Stocktwits api/page now working properly, and is properly formatted.  
+
+Still needs work: View, Edit and Delete Portfolio Buttons.  Delete individual stocks from portfolios still not working properly.  The following link outlines all outstanding issues and their status:
+https://docs.google.com/spreadsheet/ccc?key=0Ah7D2allnPgFdHFFVDJDcjVSZ0QxelY0ZEJMM0VIMFE&usp=sharing
+
+Issues of concern largely out of my control: Ajax call to Yahoo Query Library (YQL) seems to fail about 50% of the time, most prominently during the day.  Theory is that Backlift can only pull secure data, but fixing that does not always produce a consistent result.  Also, some valuation data in Yahoo! Finance was incorrect at one point, but that may have been temporary.  
+
+
 After Week 2:
 -------------
 In the prior week, the data gathering from Yahoo Finance was very manually intensive.  Now it is more automated, and the data is more current. Instead of saving the data in JSON a file, we now only save the portfolio of stock tickers in a JSON file.  Through an Ajax call, we can now pull down the most updated data from Yahoo Finance.

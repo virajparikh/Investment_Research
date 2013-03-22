@@ -10,7 +10,7 @@ $(document).ready(function() {
 	};
 
 	var createYQLURL = function(portfolio){
-	    var baseYQLURL = 'http://query.yahooapis.com/v1/public/yql?env=http%3A%2F%2Fdatatables.org%2Falltables.env&format=json&q=';
+	    var baseYQLURL = 'https://query.yahooapis.com/v1/public/yql?env=http%3A%2F%2Fdatatables.org%2Falltables.env&format=json&q=';
 
 		var yqlQuery = 'select * from yahoo.finance.quotes where symbol in (';
 		    for( var i = 0; i < portfolio.stocks.length; i++){
@@ -115,7 +115,18 @@ $(document).ready(function() {
 		}); // End .ajax()
 	};
 
-	// function deleteTeam(id) {
+	var deleteStock = function(stock) {
+		$.ajax({
+			url: '/backliftapp/portfolio/' + stock.id,
+			type: "DELETE",
+			dataType: "json",
+			success: function(data) {
+				alert('deleted stock: ' + stock.Name);
+			} // End success
+		}); // End .ajax()
+	};
+
+		// function deleteTeam(id) {
  //      $('#cutTeam').click(function() {
  //        $.ajax({
  //          url: "backliftapp/team/" + id,
@@ -128,18 +139,6 @@ $(document).ready(function() {
  //      }); // End .click()
  //    }; // End deleteTeam()
 
-	var deleteStock = function(name) {
-		// Get teams from database
-		$.ajax({
-			url: '/backliftapp/portfolio/' + stock.id,
-			type: "DELETE",
-			dataType: "json",
-			success: function(data) {
-				alert('deleted stock: ' + stock.Name);
-			} // End success
-		}); // End .ajax()
-	};
-
 	var addStocksToTable = function(stock) {
       $('#stockTable').append(      	
 		      	"<tr class='ticker' id='" + stock.id + "'>" +
@@ -150,19 +149,31 @@ $(document).ready(function() {
 		        "<td id='priceToBook'>" + stock.PriceToBook + "</td>" +
 		        "<td id='stMomentum'>" + stock.stMomentum + "</td>" +
 		        "<td id='ltMomentum'>" + stock.ltMomentum + "</td>" +
-		        "<td id='deleteStockIcon'>" + "<a href='#deleteStockModal' data-toggle='modal' onclick='deleteStock(\"" + stock.id + "\")'><i class='icon-remove'></i> </a>" + "</td>" + "</tr>"  
+		        "<td id='deleteStockIcon'>" + "<a href='#deleteStockModal' data-toggle='modal'><i class='icon-remove'></i> </a>" + "</td>" + "</tr>"  
 		    );
         };  
 
     var addPortfolioToTable = function(portfolio) {
       $('#portfolioList').append(      	
-	      	'<tr id="' + portfolio.id + '">' + '<td>' + '<a href="*">' + portfolio.name + '</a>' + '</td>' + '<td>' + '<ul class="pull-right">' +
+	      	'<tr id="' + portfolio.id + '">' + '<td>' + portfolio.name + '</td>' + '<td>' + '<ul class="pull-right">' +
               '<a id="getPortfolioBtn" role="button" class="btn btn-info">View Portfolio</a>' + ' ' +
               '<a id="editPortfolioModalBtn" href="#editPortfolioModal" role="button" class="btn btn-warning" data-toggle="modal">Edit Portfolio</a>' + ' ' +
               '<a id="deletePortfolioModalBtn" href="#deletePortfolioModal" role="button" class="btn btn-danger" data-toggle="modal">Delete Portfolio</a>' + "</ul>" + "</tr>"
 		        );
   	};
-		        
+
+  	//clear fields in form
+  	var clearForm = function() {
+      $(".clearInputs").each(function () {
+        $(this).val("");
+      });
+    };
+
+    //form validation
+    $("#createPortfolioForm").validate();   //not working properly	
+
+    //tablesorter
+    $("#portfolioAnalysisTable").tablesorter();  //not working properly
 
 
 	// BUTTON CLICKS 
@@ -176,6 +187,7 @@ $(document).ready(function() {
 		var portfolio = createPortfolioFromInput($("#createPortfolioName").val(), $("#addTickerInput").val());
 		createPortfolio(portfolio);
 		addPortfolioToTable(portfolio);  //viraj: added this function
+		clearForm();
 	});
 
 	$("#getPortfolioBtn").click(function(){  // is this a click, or does this load on document ready?
@@ -204,11 +216,8 @@ $(document).ready(function() {
 		deletePortfolio(portfolio.id);
 	});
 
-	$("deleteStockIcon").click(function(){
-		//var name = "viraj"
-		// END
-		// var name = $("#portfolioNameToBeDeleted").val();
-		deleteStock(id);
+	$("deleteStockBtn").click(function(){
+		deleteStock(stock);
 	});
 
 }); // END DOC .READY() ========================================================= -->

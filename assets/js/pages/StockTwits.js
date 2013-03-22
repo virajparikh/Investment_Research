@@ -15,9 +15,9 @@ $(document).ready(function() {
         STWT.Widget({
             container: 'stocktwits-widget-news',
             symbol: $("#ticker").val(),
-            width: '300',
-            height: '600',
-            limit: '15',
+            width: '900',
+            height: '2000',
+            limit: '500',
             scrollbars: 'true',
             streaming: 'true',
             title: $("#ticker").val() + ' Ideas',

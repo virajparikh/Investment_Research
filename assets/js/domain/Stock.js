@@ -23,7 +23,7 @@
 				return "Negative ST Momentum"
 
 			} else {
-				return "!! error in calculation !!"
+				return "!! Bad Data !!"
 				}
 	};
     

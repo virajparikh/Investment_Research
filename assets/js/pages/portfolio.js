@@ -3,7 +3,7 @@ $(document).ready(function() {
 	var createPortfolioFromInput = function (name, strStocks) { 
 	    var portfolio = {
 	        name: name,
-	        stocks: [ ]
+	        stocks: []
 	    };
 	    var space = ' ';
 	    var stocks = strStocks.replace(/,/g, space).replace(/;/g, space).split(' ');  //replace all commas and semicolons with spaces (g = global)
@@ -39,7 +39,9 @@ $(document).ready(function() {
 	};
 
 	var showPortfolio = function(portfolio) { 
-
+		
+		$("#stockTable").empty();
+		
 		var yqlurl = createYQLURL(portfolio);
 
 		$.ajax({
@@ -47,19 +49,38 @@ $(document).ready(function() {
 			type: "GET",	
 			dataType: "json",
 			success: function(stocksjson) {
-				for (var i = 0; i < stocksjson.query.count; i++) {  //how did you come up with 'stocksjson.query.count'?
-					var stock = stocksjson.query.results.quote[i]; //digs into the layers of the json file and returns only the relevant stock data
-					processStock(stock);
-					addStocksToTable(stock);			
+				if ( stocksjson.query.results.quote ) {
+						for (var i = 0; i < stocksjson.query.count; i++) {  //how did you come up with 'stocksjson.query.count'?
+							var stock = stocksjson.query.results.quote[i]; //digs into the layers of the json file and returns only the relevant stock data
+							processStock(stock);
+							addStocksToTable(stock);			
+						}
+				} else {
+					alert("Unfortunately Yahoo's YQL is not dependable and currenty is broken. Please try again later.");
 				}
 			} // End success
 		}); // End .ajax()
 	};
 
+	var getPortfolios = function(){
+		
+		$.ajax({
+			url: '/backliftapp/portfolio',
+			type: "GET",			
+			dataType: "json",
+			success: function(portfolios) {   			 
+	   			for (var i = 0; i < portfolios.length; i ++) {	   
+	   				addPortfolioToTable(portfolios[i]);
+	   			}
+	   		}
+	   	});
+	}
+	getPortfolios();
+
+
 	var createPortfolio = function(portfolio){
 
 		portfolio.id = portfolio.name;  //need help understanding this line better; what would happen if it were absent; do I need it on other functions?
-		
 		$.ajax({
 			url: '/backliftapp/portfolio',
 			type: "POST",
@@ -70,31 +91,38 @@ $(document).ready(function() {
 	   		}
 	   	});
 	};
+	
+	var fixPortfolio = function(portfolio){
+		portfolio.stocks = portfolio["stocks[]"];
+	};
 
 	var getAndShowPortfolio = function(name){
+		
 		$.ajax({
 			url: '/backliftapp/portfolio/' + name,  
 			type: "GET",
 			dataType: "json",
 			success: function(portfolio) {
+				fixPortfolio(portfolio);
 	   			showPortfolio(portfolio);
 	   		}
 	   	});
 	};
 
 	var getPortfolioForEdit = function(name){
-	$.ajax({
+		$.ajax({
 			url: '/backliftapp/portfolio/' + name,   
 			type: "GET",
 			dataType: "json",
 			success: function(portfolio) {
+				fixPortfolio(portfolio);
 	   			$("#updatePortfolioName").html(portfolio.name);
 	   			$("#updateTickerInput").val(portfolio.stocks.join(' '));
 	   		}
 	   	});
 	};
 
-	var	editPortfolio = function(portfolio){
+	var	updatePortfolio = function(portfolio){		
 		$.ajax({
 			url: '/backliftapp/portfolio/' + portfolio.name,
 			type: "PUT",
@@ -113,7 +141,7 @@ $(document).ready(function() {
 			dataType: "json",
 			success: function(data) {   //why data here?
 				alert('deleted portfolio: ' + name);  
-				$('#' + id).remove();  //does this make sense?
+				$('#' + name).remove();  
 			} // End success
 		}); // End .ajax()
 	};
@@ -131,24 +159,24 @@ $(document).ready(function() {
 
 	var addStocksToTable = function(stock) {
       $('#stockTable').append(      	
-		      	"<tr class='ticker' id='" + stock.id + "'>" +
-		        "<td id='ticker'>" + stock.id + "</td>" +
-		        "<td id='name'>" + stock.Name + "</td>" +
-		        "<td id='mktcap'>" + stock.MarketCapitalization + "</td>" +
-		        "<td id='fwdPE'>" + stock.ForwardPE + "</td>" +
-		        "<td id='priceToBook'>" + stock.PriceToBook + "</td>" +
-		        "<td id='stMomentum'>" + stock.stMomentum + "</td>" +
-		        "<td id='ltMomentum'>" + stock.ltMomentum + "</td>" +
-		        "<td id='deleteStockIcon'>" + "<a href='#deleteStockModal' data-toggle='modal' onclick='deleteStock(\"" + stock.id + "\")'><i class='icon-remove'></i> </a>" + "</td>" + "</tr>"  
+		      	"<tr class='stockRow' id='" + stock.id + "'>" +
+		        "<td class='ticker'>" + stock.id + "</td>" +
+		        "<td class='name'>" + stock.Name + "</td>" +
+		        "<td class='mktcap'>" + stock.MarketCapitalization + "</td>" +
+		        "<td class='fwdPE'>" + stock.ForwardPE.toFixed(2) + "x</td>" +
+		        "<td class='priceToBook'>" + stock.PriceToBook.toFixed(2) + "x</td>" +
+		        "<td class='stMomentum'>" + stock.stMomentum + "</td>" +
+		        "<td class='ltMomentum'>" + stock.ltMomentum + "</td>" +
+		        "<td class='deleteStockIcon'>" + "<a href='#deleteStockModal' data-toggle='modal' onclick='deleteStock(\"" + stock.id + "\")'><i class='icon-remove'></i> </a>" + "</td>" + "</tr>"  
 		    );
         };  
 
     var addPortfolioToTable = function(portfolio) {
       $('#portfolioList').append(      	
-	      	'<tr id="' + portfolio.id + '">' + '<td id="portfolioName">' + portfolio.name + '</td>' + '<td>' + '<ul class="pull-right">' +
-              '<a id="getPortfolioBtn" role="button" class="btn btn-info">View Portfolio</a>' + ' ' +
-              '<a id="editPortfolioModalBtn" href="#editPortfolioModal" role="button" class="btn btn-warning" data-toggle="modal">Edit Portfolio</a>' + ' ' +
-              '<a id="deletePortfolioModalBtn" href="#deletePortfolioModal" role="button" class="btn btn-danger" data-toggle="modal">Delete Portfolio</a>' + "</ul>" + "</tr>"
+	      	'<tr class="portfolioRow" id="' + portfolio.id + '">' + '<td class="portfolioName">' + portfolio.name + '</td>' + '<td>' + '<div class="pull-right">' +
+              '<button role="button" class="getPortfolioBtn btn btn-info" >View Portfolio</button>' + '  ' +
+              '<a href="#editPortfolioModal" role="button" data-toggle="modal" class="editPortfolioBtn btn btn-warning">Edit Portfolio</a>' + '  ' +
+              '<button role="button" class="deletePortfolioBtn btn btn-danger" >Delete Portfolio</button></div>' + "</tr>"
 		        );
   	};
 
@@ -183,25 +211,43 @@ $(document).ready(function() {
 		clearForm();
 	});
 
-	$("#getPortfolioBtn").click(function(){  
+	$("body").on("click", ".getPortfolioBtn", function() {
+		var pn = $(this).closest("tr").attr('id')
+		getAndShowPortfolio(pn);
+	})
 
-		var name = $('#portfolioName').val();  //how do we associate this id with a unique portfolio name?
+	$("body").on("click", ".editPortfolioBtn", function() {
+		var pn = $(this).closest("tr").attr('id')
+		getPortfolioForEdit(pn);
+	})
 
-		getAndShowPortfolio(name);
-	});
+	$("body").on("click", ".deletePortfolioBtn", function() {
+		var pn = $(this).closest("tr").attr('id')
+		deletePortfolio(pn);
+	})
 
+
+	// }
+
+	// 	(function(){  
+
+	// 	var name = $('#portfolioName').val();  //how do we associate this id with a unique portfolio name?
+
+	// 	getAndShowPortfolio(name);
+	// });
+    
 	$("#editPortfolioBtn").click(function(){
 		
 		getPortfolioForEdit(portfolio);
 
-		var portfolio = createPortfolioFromInput($("#updatePortfolioName").val(), $("#updateTickerInput").val());  //how do we associate these ids with a unique portfolio name and a unique basket of stocks?
+		var portfolio = createPortfolioFromInput($("#updatePortfolioName").html(), $("#updateTickerInput").val());  //how do we associate these ids with a unique portfolio name and a unique basket of stocks?
 		//var portfolio = { 
 		//		name: "viraj", 
 		//		stocks: ['GOOG', 'EBAY', 'GS', 'MSFT', 'AAPL'] 
 		//};
 		// END
 
-		editPortfolio(portfolio);
+		updatePortfolio(portfolio);
 	});
 
 

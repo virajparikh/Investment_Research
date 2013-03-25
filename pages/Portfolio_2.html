@@ -83,7 +83,7 @@
         <div id="createPortfolioModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <button type="button" class="cancelBtn close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="myModalLabel">Create Your Portfolio<small> Input your stock tickers here</small></h3>
           </div>
           
@@ -107,7 +107,7 @@
           </div>
 
           <div class="modal-footer">
-            <button id="cancelBtn" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            <button class="cancelBtn btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
             <button id="createPortfolioBtn" class="btn btn-success" data-dismiss="modal" aria-hidden="true">Add Portfolio</button>
           </div>
         </div>
@@ -118,7 +118,7 @@
 
         <div id="editPortfolioModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <button type="button" class="cancelBtn close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="myModalLabel">Edit Portfolio<small> Edit your stock tickers here</small></h3>
         </div>
         
@@ -127,7 +127,7 @@
             <div class="control-group">
               <label class="control-label" for="Name">Portfolio:</label>
                 <div class="controls">
-                  <div id="updatePortfolioName" class="stockInputs" name="Portfolio Name" ></div>
+                  <h4 id="updatePortfolioName" class="stockInputs clearInputs" name="Portfolio Name" ></h4>
                 </div>
             </div>
 
@@ -141,17 +141,17 @@
         </div>
 
           <div class="modal-footer">
-            <button id="cancelBtn" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            <button class="cancelBtn btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
             <button id="submitUpdatePortfolioBtn" class="btn btn-warning" data-dismiss="modal" aria-hidden="true">Update Portfolio</button>
           </div>
         </div>
 
         <!-- DELETE PORTFOLIO MODAL
         ================================ -->
-
+<!-- 
         <div id="deletePortfolioModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <button type="button" class="cancelBtn close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="myModalLabel">WARNING!</h3>
           </div>
 
@@ -162,24 +162,24 @@
           </div>
 
           <div class="modal-footer">
-            <button id="cancelBtn" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            <button class="cancelBtn btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
             <button id="deletePortfolioBtn" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Delete Portfolio</button>
           </div>
-        </div>
+        </div> -->
 
 
         <!-- DELETE INDIVIDUAL TICKER CONFIRMATION MODAL
         ================================ -->
         <div id="deleteStockModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <button type="button" class="cancelBtn close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="myModalLabel">Delete this stock?</h3>
           </div>
           <div class="modal-body">
             <p>Are you sure?</p>
           </div>
           <div class="modal-footer">
-            <button class="cancelBtn" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            <button class="cancelBtn btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
             <button id="deleteStockBtn" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Delete Stock</button>
           </div>
         </div>
@@ -208,14 +208,7 @@
 
 
            {{$ scripts }}
-          <!--<script type="text/javascript" src="../assets/js/jquery.tablesorter.js"></script>-->
-          <!-- 
-           <script>
-              $(document).ready(function() {
-                    $(".tablesorter").tablesorter(); 
-              }); 
-          </script>
-     -->
+        
   </body>
 
 

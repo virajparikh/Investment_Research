@@ -42,7 +42,7 @@ $(document).ready(function() {
 		// replace the old stock table with the new stock table		
 		$("#stockTable").empty();
 		$("#portfolioNameInHeader").empty();
-		$('#portfolioNameInHeader').html("Portfolio Analysis: " + portfolio.name);	
+		$('#portfolioNameInHeader').html("Portfolio Analysis: <em>" + portfolio.name + "</em>");	
 		
 		var yqlurl = createYQLURL(portfolio);
 
@@ -51,7 +51,7 @@ $(document).ready(function() {
 			type: "GET",	
 			dataType: "json",
 			success: function(stocksjson) {
-				if ( stocksjson.query.results.quote === "null") {
+				if ( stocksjson.query.results.quote ) {
 						for (var i = 0; i < stocksjson.query.count; i++) {  //how did you come up with 'stocksjson.query.count'?
 							var stock = stocksjson.query.results.quote[i]; //digs into the layers of the json file and returns only the relevant stock data
 							processStock(stock);
@@ -94,6 +94,7 @@ $(document).ready(function() {
 	
 	var fixPortfolio = function(portfolio){
 		portfolio.stocks = portfolio["stocks[]"];
+		//portfolio.stocks = JSON.parse(portfolio["stocks[]"]);
 	};
 
 	var getAndShowPortfolio = function(name){
@@ -210,7 +211,7 @@ $(document).ready(function() {
 		// END
 
 		createPortfolio(portfolio);
-		addPortfolioToTable(portfolio);  //viraj: added this function
+		addPortfolioToTable(portfolio);  
 		$(".tablesorter").tablesorter(); 
 		clearForm();
 	});
@@ -219,6 +220,7 @@ $(document).ready(function() {
 	$("body").on("click", ".viewPortfolioBtn", function() {
 		var pn = $(this).closest("tr").attr('id')
 		getAndShowPortfolio(pn);
+		$(".tablesorter").tablesorter(); 
 	})
 
 	//Edit Portfolio button
@@ -228,12 +230,12 @@ $(document).ready(function() {
 	})
 	  //in Edit Portfolio modal, Update Portfolio button
 	$("#submitUpdatePortfolioBtn").click(function(){
-		
 		getPortfolioForEdit(portfolio);
 
 		var portfolio = createPortfolioFromInput($("#updatePortfolioName").html(), $("#updateTickerInput").val());  //
 
 		updatePortfolio(portfolio);
+		$(".tablesorter").tablesorter(); 
 		clearForm();
 	});
 
@@ -249,11 +251,13 @@ $(document).ready(function() {
 		deleteStock(stock);
 	})
 
+	//Cancel and 'x' button
+	$("#cancelBtn").click(function(){
+		clearForm();
+	});
 
 	// $("#deleteStockBtn").click(function(){
-
 	// 	var stock = $('#tickerSymbol').val();  //how do we associate this id with a unique stock ticker?
-
 	// 	deleteStock(stock);
 	// });
 

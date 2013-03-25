@@ -1,6 +1,33 @@
 Investment_Research
 ===================
 
+Week 3.0 - 2 days before final project is due
+---------------------------------------------
+
+Main app URL: https://investmentproject-jarus.backliftapp.com/pages/Portfolio_2.html
+
+Main files to evaluate:
+pages/Portfolio_2.html, 
+assets/js/pages/portfolio.js, 
+assets/js/domain/stock.js
+
+The Good News:
+
+- The Javascript files are broken up to reflect "state" (assets/js/domain/stock.js) versus "behavior" (assets/js/pages/portfolio.js).  I only have a rough understanding of this concept, as this is my first project implementing it (known in software circles as Domain Driven Design, or DDD), but my mentor Alan Huffman was very helpful in helping me architect this project using this concept.
+- Data is now persistent, i.e. stock portfolios created in prior sessions now loads on (document).ready.  
+- All buttons are now operational: Create Portfolio, View Portfolio, Edit Portfolio & Delete Portfolio.
+- Many other smaller issues outlined in this Google Doc are now resolved: https://docs.google.com/spreadsheet/ccc?key=0Ah7D2allnPgFdHFFVDJDcjVSZ0QxelY0ZEJMM0VIMFE&usp=sharing
+- Stocktwits is working here.  See app here: https://investmentproject-jarus.backliftapp.com/pages/StockTwits_3.html
+- Plenty of investor education website and book links here: https://investmentproject-jarus.backliftapp.com/pages/Investor_Education_4.html
+
+The Bad News: 
+
+- The app was fully functional, and now it is not.  I have gone back several times to the point where it worked, and it does not work properly even at that prior point.  The problem is that the stock tickers are now being parsed letter-by-letter, so the tickers when viewed are not accurate.  This is highly unusual, and after spending the last day addressing this issue, I am not confident this will be resolved.
+- Yahoo's YQL database, which is where all of the raw stock data is retrieved from, is not reliable.  It fails to retrieve data about 50% of the time.  Obviously this is unsatisfactory, but no other free data sources have been found.  Moreover, at this point, my program is too reliant on YQL to change at this point.
+- Backlift does not support application/json for ajax POST, which is creating stringify issues.
+- Table sorter is not working properly
+
+
 After Week 2.5:
 ----------------
 https://investmentproject-jarus.backliftapp.com/pages/Portfolio_2.html

@@ -17,14 +17,14 @@ $(document).ready(function() {
 
 	var createYQLURL = function(portfolio){
 	    var baseYQLURL = 'https://query.yahooapis.com/v1/public/yql?env=http%3A%2F%2Fdatatables.org%2Falltables.env&format=json&q=';
-
+	    //.stocks = portfolio.stock.split("', '");
 		var yqlQuery = 'select * from yahoo.finance.quotes where symbol in (';
 		    for( var i = 0; i < portfolio.stocks.length; i++){
 		        yqlQuery += '"' + portfolio.stocks[i] + '"';
 		        yqlQuery += i === (portfolio.stocks.length - 1) ? "" : ",";		        
 		    }
 		    yqlQuery += ')';
-
+	
 	    var yqlURL = baseYQLURL + encodeURI(yqlQuery);
 	    return yqlURL;
 	};
@@ -94,6 +94,10 @@ $(document).ready(function() {
 	
 	var fixPortfolio = function(portfolio){
 		portfolio.stocks = portfolio["stocks[]"];
+	
+		// if( portfolio["stocks[]"] ) {
+		//   portfolio.stocks = JSON.parse(portfolio["stocks[]"]);
+		// }
 		//portfolio.stocks = JSON.parse(portfolio["stocks[]"]);
 	};
 
@@ -255,11 +259,6 @@ $(document).ready(function() {
 	$("#cancelBtn").click(function(){
 		clearForm();
 	});
-
-	// $("#deleteStockBtn").click(function(){
-	// 	var stock = $('#tickerSymbol').val();  //how do we associate this id with a unique stock ticker?
-	// 	deleteStock(stock);
-	// });
 
 }); // END DOC .READY() ========================================================= -->
 

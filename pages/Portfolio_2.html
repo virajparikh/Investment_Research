@@ -55,14 +55,7 @@
 
         <div class="text-center">
 
-          <h3>Portfolio Analysis</h3>
-          <!-- <div class="nav-collapse collapse">
-             <ul class="pull-right">
-              <a id="getPortfolioBtn" role="button" class="btn btn-info">View Portfolio</a>
-              <a id="editPortfolioModalBtn" href="#editPortfolioModal" role="button" class="btn btn-warning" data-toggle="modal">Edit Portfolio</a>
-              <a id="deletePortfolioModalBtn" href="#deletePortfolioModal" role="button" class="btn btn-danger" data-toggle="modal">Delete Portfolio</a>
-            </ul>
-          </div><!--/.nav-collapse --> 
+          <h3 id="portfolioNameInHeader"> </h3>
            
           <table id="portfolioAnalysisTable" class="table table-striped tablesorter">
             <thead>
@@ -70,8 +63,8 @@
                 <th>Ticker</th>
                 <th>Company</th>
                 <th>Mkt Cap</th>
-                <th>Fwd P/Earnings</th>
-                <th>P/Book Value</th>
+                <th>Fwd Price/Earnings</th>
+                <th>Price/Book Value</th>
                 <th>ST Momentum</th>
                 <th>LT Momentum</th>
               </tr>
@@ -126,7 +119,7 @@
         <div id="editPortfolioModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="myModalLabel">Edit Your Portfolio<small> Edit your stock tickers here</small></h3>
+            <h3 id="myModalLabel">Edit Portfolio<small> Edit your stock tickers here</small></h3>
         </div>
         
         <div class="modal-body">
@@ -141,7 +134,7 @@
               <div class="control-group">
                 <label class="control-label" for="tickers">Stocks:</label>
                 <div class="controls">
-                  <textarea rows="3"  type="text" id="updateTickerInput" class="stockInputs" name="Tickers" placeholder="Tickers (separated by spaces)" required></textarea>
+                  <textarea rows="3"  type="text" id="updateTickerInput" class="stockInputs clearInputs" name="Tickers" placeholder="Tickers (separated by spaces)" required></textarea>
                 </div>
               </div>
           </form>
@@ -149,7 +142,7 @@
 
           <div class="modal-footer">
             <button id="cancelBtn" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-            <button id="editPortfolioBtn" class="btn btn-warning" data-dismiss="modal" aria-hidden="true">Update Portfolio</button>
+            <button id="submitUpdatePortfolioBtn" class="btn btn-warning" data-dismiss="modal" aria-hidden="true">Update Portfolio</button>
           </div>
         </div>
 

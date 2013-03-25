@@ -39,8 +39,10 @@ $(document).ready(function() {
 	};
 
 	var showPortfolio = function(portfolio) { 
-		
+		// replace the old stock table with the new stock table		
 		$("#stockTable").empty();
+		$("#portfolioNameInHeader").empty();
+		$('#portfolioNameInHeader').html("Portfolio Analysis: " + portfolio.name);	
 		
 		var yqlurl = createYQLURL(portfolio);
 
@@ -49,21 +51,21 @@ $(document).ready(function() {
 			type: "GET",	
 			dataType: "json",
 			success: function(stocksjson) {
-				if ( stocksjson.query.results.quote ) {
+				if ( stocksjson.query.results.quote === "null") {
 						for (var i = 0; i < stocksjson.query.count; i++) {  //how did you come up with 'stocksjson.query.count'?
 							var stock = stocksjson.query.results.quote[i]; //digs into the layers of the json file and returns only the relevant stock data
 							processStock(stock);
 							addStocksToTable(stock);			
 						}
 				} else {
-					alert("Unfortunately Yahoo's YQL is not dependable and currenty is broken. Please try again later.");
+					alert("Unfortunately Yahoo's YQL is not dependable and is currently broken. Please try again later.");
 				}
 			} // End success
 		}); // End .ajax()
 	};
 
+	//load portfolios created on document.ready
 	var getPortfolios = function(){
-		
 		$.ajax({
 			url: '/backliftapp/portfolio',
 			type: "GET",			
@@ -77,9 +79,7 @@ $(document).ready(function() {
 	}
 	getPortfolios();
 
-
 	var createPortfolio = function(portfolio){
-
 		portfolio.id = portfolio.name;  //need help understanding this line better; what would happen if it were absent; do I need it on other functions?
 		$.ajax({
 			url: '/backliftapp/portfolio',
@@ -97,7 +97,6 @@ $(document).ready(function() {
 	};
 
 	var getAndShowPortfolio = function(name){
-		
 		$.ajax({
 			url: '/backliftapp/portfolio/' + name,  
 			type: "GET",
@@ -148,33 +147,37 @@ $(document).ready(function() {
 
 	var deleteStock = function(stock) {
 		$.ajax({
-			url: '/backliftapp/portfolio/' + stock,
+			url: '/backliftapp/portfolio/' + name,
 			type: "DELETE",
 			dataType: "json",
 			success: function(data) {
+				fixPortfolio(portfolio);
 				alert('deleted stock: ' + stock);
+				$('#' + stock).remove(); 
 			} // End success
 		}); // End .ajax()
 	};
 
-	var addStocksToTable = function(stock) {
+	//creates Portfolio Analysis table
+	var addStocksToTable = function (stock) {
       $('#stockTable').append(      	
 		      	"<tr class='stockRow' id='" + stock.id + "'>" +
 		        "<td class='ticker'>" + stock.id + "</td>" +
 		        "<td class='name'>" + stock.Name + "</td>" +
-		        "<td class='mktcap'>" + stock.MarketCapitalization + "</td>" +
-		        "<td class='fwdPE'>" + stock.ForwardPE.toFixed(2) + "x</td>" +
-		        "<td class='priceToBook'>" + stock.PriceToBook.toFixed(2) + "x</td>" +
+		        "<td align='right' class='right mktcap'>" + stock.MarketCapitalization + "</td>" +
+		        "<td align='center' class='fwdPE'>" + stock.ForwardPE.toFixed(2) + "x</td>" +
+		        "<td align='center' class='priceToBook'>" + stock.PriceToBook.toFixed(2) + "x</td>" +
 		        "<td class='stMomentum'>" + stock.stMomentum + "</td>" +
 		        "<td class='ltMomentum'>" + stock.ltMomentum + "</td>" +
-		        "<td class='deleteStockIcon'>" + "<a href='#deleteStockModal' data-toggle='modal' onclick='deleteStock(\"" + stock.id + "\")'><i class='icon-remove'></i> </a>" + "</td>" + "</tr>"  
+		        "<td class='deleteStockIcon'>" + "<i class='icon-remove'></i>" + "</td>" + "</tr>"  
 		    );
         };  
 
+    //creates Portflio List    
     var addPortfolioToTable = function(portfolio) {
       $('#portfolioList').append(      	
-	      	'<tr class="portfolioRow" id="' + portfolio.id + '">' + '<td class="portfolioName">' + portfolio.name + '</td>' + '<td>' + '<div class="pull-right">' +
-              '<button role="button" class="getPortfolioBtn btn btn-info" >View Portfolio</button>' + '  ' +
+	      	'<tr class="portfolioRow" id="' + portfolio.id + '">' + '<td class="portfolioName">' + '<h5>' + portfolio.name + '</h5>' + '</td>' + '<td>' + '<div class="pull-right">' +
+              '<button role="button" class="viewPortfolioBtn btn btn-info" >View Portfolio</button>' + '  ' +
               '<a href="#editPortfolioModal" role="button" data-toggle="modal" class="editPortfolioBtn btn btn-warning">Edit Portfolio</a>' + '  ' +
               '<button role="button" class="deletePortfolioBtn btn btn-danger" >Delete Portfolio</button></div>' + "</tr>"
 		        );
@@ -196,6 +199,7 @@ $(document).ready(function() {
 
 	// BUTTON CLICKS ============================================== >
 	
+	//Create Portfolio button
 	$("#createPortfolioBtn").click(function(){
 		
 		var portfolio = createPortfolioFromInput($("#createPortfolioName").val(), $("#addTickerInput").val());
@@ -211,59 +215,47 @@ $(document).ready(function() {
 		clearForm();
 	});
 
-	$("body").on("click", ".getPortfolioBtn", function() {
+	//View Portfolio button
+	$("body").on("click", ".viewPortfolioBtn", function() {
 		var pn = $(this).closest("tr").attr('id')
 		getAndShowPortfolio(pn);
 	})
 
+	//Edit Portfolio button
 	$("body").on("click", ".editPortfolioBtn", function() {
 		var pn = $(this).closest("tr").attr('id')
 		getPortfolioForEdit(pn);
 	})
+	  //in Edit Portfolio modal, Update Portfolio button
+	$("#submitUpdatePortfolioBtn").click(function(){
+		
+		getPortfolioForEdit(portfolio);
 
+		var portfolio = createPortfolioFromInput($("#updatePortfolioName").html(), $("#updateTickerInput").val());  //
+
+		updatePortfolio(portfolio);
+		clearForm();
+	});
+
+	//Delete Portfolio button
 	$("body").on("click", ".deletePortfolioBtn", function() {
 		var pn = $(this).closest("tr").attr('id')
 		deletePortfolio(pn);
 	})
 
-
-	// }
-
-	// 	(function(){  
-
-	// 	var name = $('#portfolioName').val();  //how do we associate this id with a unique portfolio name?
-
-	// 	getAndShowPortfolio(name);
-	// });
-    
-	$("#editPortfolioBtn").click(function(){
-		
-		getPortfolioForEdit(portfolio);
-
-		var portfolio = createPortfolioFromInput($("#updatePortfolioName").html(), $("#updateTickerInput").val());  //how do we associate these ids with a unique portfolio name and a unique basket of stocks?
-		//var portfolio = { 
-		//		name: "viraj", 
-		//		stocks: ['GOOG', 'EBAY', 'GS', 'MSFT', 'AAPL'] 
-		//};
-		// END
-
-		updatePortfolio(portfolio);
-	});
-
-
-	$("#deletePortfolioBtn").click(function(portfolio){
-
-		var name = $('#portfolioName').val();  //how do we associate this id with a unique portfolio name?
-		
-		deletePortfolio(name);
-	});
-
-	$("#deleteStockBtn").click(function(){
-
-		var stock = $('#tickerSymbol').val();  //how do we associate this id with a unique stock ticker?
-
+	//Delete individual stocks from the table and the displayed portfolio
+	$("body").on("click", ".deleteStockIcon", function(stock) {
+		var st = $(this).closest("tr").attr('id')
 		deleteStock(stock);
-	});
+	})
+
+
+	// $("#deleteStockBtn").click(function(){
+
+	// 	var stock = $('#tickerSymbol').val();  //how do we associate this id with a unique stock ticker?
+
+	// 	deleteStock(stock);
+	// });
 
 }); // END DOC .READY() ========================================================= -->
 

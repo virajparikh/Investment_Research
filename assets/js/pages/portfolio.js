@@ -82,18 +82,18 @@ $(document).ready(function() {
 	getPortfolios();
 
 	var createPortfolio = function(portfolio){
-
 		$.ajax({
 			url: '/backliftapp/portfolios',
 			type: "POST",
-			data: portfolio,
-			dataType: "json",
+			data: JSON.stringify(portfolio),
+			contentType:'application/json',
 			success: function(portfolio) {    
 	   			showPortfolio(portfolio);
 	   		}
 	   	});
 	};
 	
+	//to fix Backlift stringify array issues
 	var fixPortfolio = function(portfolio){
 	    var stocks_w_brackets = portfolio["stocks[]"];
 	    if( stocks_w_brackets ){
@@ -105,8 +105,7 @@ $(document).ready(function() {
 	        delete portfolio["stocks[]"];
 	    }
 	    return portfolio;
-	}
-
+	};
 
 	var getAndShowPortfolio = function(id){
 		$.ajax({
@@ -157,18 +156,18 @@ $(document).ready(function() {
 		}); // End .ajax()
 	};
 
-	var deleteStock = function(stock) {
-		$.ajax({
-			url: '/backliftapp/portfolios/' + name,
-			type: "DELETE",
-			dataType: "json",
-			success: function() {
-				fixPortfolio(portfolio);
-				alert('deleted stock: ' + stock);
-				$('#' + stock).remove(); 
-			} // End success
-		}); // End .ajax()
-	};
+	// var deleteStock = function(stock) {
+	// 	$.ajax({
+	// 		url: '/backliftapp/portfolios/' + name,
+	// 		type: "DELETE",
+	// 		dataType: "json",
+	// 		success: function() {
+	// 			fixPortfolio(portfolio);
+	// 			alert('deleted stock: ' + stock);
+	// 			$('#' + stock).remove(); 
+	// 		} // End success
+	// 	}); // End .ajax()
+	//};
 
 	//creates Portfolio Analysis table
 	var addStocksToTable = function (stock) {
@@ -181,7 +180,8 @@ $(document).ready(function() {
 		        "<td align='center' class='priceToBook'>" + stock.PriceToBook.toFixed(2) + "x</td>" +
 		        "<td class='stMomentum'>" + stock.stMomentum + "</td>" +
 		        "<td class='ltMomentum'>" + stock.ltMomentum + "</td>" +
-		        "<td class='deleteStockIcon'>" + "<i class='icon-remove'></i>" + "</td>" + "</tr>"  
+		        //"<td class='deleteStockIcon'>" + "<i class='icon-remove'></i>" + "</td>"
+		        "</tr>"  
 		    );
         };  
 
@@ -192,7 +192,7 @@ $(document).ready(function() {
               '<button role="button" class="viewPortfolioBtn btn btn-info" >View Portfolio</button>' + '  ' +
               '<a href="#editPortfolioModal" role="button" data-toggle="modal" class="editPortfolioBtn btn btn-warning">Edit Portfolio</a>' + '  ' +
               '<button role="button" class="deletePortfolioBtn btn btn-danger" >Delete Portfolio</button></div>' + "</tr>"
-		        );
+        );
   	};
 
   	//clear fields in form
@@ -204,7 +204,7 @@ $(document).ready(function() {
     $("#createPortfolioForm").validate();   //not working properly	
 
     //tablesorter
-    $("#portfolioAnalysisTable").tablesorter();  //semi-working; highest portfolio set not sorting properly
+    $("#portfolioAnalysisTable").tablesorter();  //not working properly	
 
 
 	// BUTTON CLICKS ============================================== >
@@ -214,7 +214,7 @@ $(document).ready(function() {
 		
 		var portfolio = createPortfolioFromInput($("#createPortfolioName").val(), $("#addTickerInput").val());
 		//var portfolio = { 
-		//		name: "viraj", 
+		//		name: "Tech", 
 		//		stocks: ['YHOO', 'EBAY', 'GS', 'MSFT', 'AAPL'] 
 		//};
 		// END

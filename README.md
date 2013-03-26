@@ -1,7 +1,7 @@
 Investment_Research
 ===================
 
-Week 3.0 - 2 days before final project is due
+Week 3.0 - 1 day before final project is due
 ---------------------------------------------
 
 Main app URL: https://investmentproject-jarus.backliftapp.com/pages/Portfolio_2.html
@@ -20,8 +20,7 @@ assets/js/domain/stock.js
 
 Caution: 
 
-- Backlift is more unstable than previously thought.  The JSON file that houses the portfolio collections have a tendency to stringify an array, for no apparent reason.  A workaround has been implemented in the program, but it is pure patchwork.  Also, Backlift does not support application/json for ajax POST, which is creating stringify issues.
-- One major problem results in stock tickers being parsed letter-by-letter, so the stocks when viewed are not accurate.  This is highly unusual.  The workaround may resolve this issue, but I am currently not confident about the fix.
+- After numerous back-and-forth e-mails with Backlift support, we were successfully able to properly stringify the array that houses all the portfolio stock tickers.  Tickers no longer seem to be parsed incorrectly (letter-by-letter) as was the problem before.  A workaround fix still exists in the code (var fixPortfolio), but this code looks to be unnecessary now. Nevertheless, we will leave it in the code base for now.
 - Yahoo's YQL database, which is where all of the raw stock data is retrieved from, is not reliable.  It fails to retrieve data about 50% of the time.  Obviously this is unsatisfactory, but no other free data sources have been found.  At this point, the app is too reliant on YQL to change at this point, but future versions will attempt to find a new data source, such as Reuters.
 - Table sorter is not working properly
 

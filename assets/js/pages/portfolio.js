@@ -6,7 +6,9 @@ $(document).ready(function() {
 	        stocks: []
 	    };
 	    var space = ' ';
-	    var stocks = strStocks.replace(/,/g, space).replace(/;/g, space).split(' ');  //replace all commas and semicolons with spaces (g = global)
+
+	    //replace all commas and semicolons with spaces (g = global)
+	    var stocks = strStocks.replace(/,/g, space).replace(/;/g, space).split(' ');  
 		    for (var i = 0; i < stocks.length; i++) {
 		        if (stocks[i]) {
 		            portfolio.stocks.push(stocks[i]);
@@ -51,7 +53,7 @@ $(document).ready(function() {
 			type: "GET",	
 			dataType: "json",
 			success: function(stocksjson) {
-				if ( stocksjson.query.results.quote ) {
+				if ( stocksjson.query.results && stocksjson.query.results.quote ) {
 						for (var i = 0; i < stocksjson.query.count; i++) {  //how did you come up with 'stocksjson.query.count'?
 							var stock = stocksjson.query.results.quote[i]; //digs into the layers of the json file and returns only the relevant stock data
 							processStock(stock);
@@ -67,7 +69,7 @@ $(document).ready(function() {
 	//load portfolios created on document.ready
 	var getPortfolios = function(){
 		$.ajax({
-			url: '/backliftapp/portfolio',
+			url: '/backliftapp/portfolios',
 			type: "GET",			
 			dataType: "json",
 			success: function(portfolios) {   			 
@@ -80,30 +82,35 @@ $(document).ready(function() {
 	getPortfolios();
 
 	var createPortfolio = function(portfolio){
-		portfolio.id = portfolio.name;  //need help understanding this line better; what would happen if it were absent; do I need it on other functions?
+
 		$.ajax({
-			url: '/backliftapp/portfolio',
+			url: '/backliftapp/portfolios',
 			type: "POST",
 			data: portfolio,
 			dataType: "json",
-			success: function() {    //why not 'portfolio' as an argument?
+			success: function(portfolio) {    
 	   			showPortfolio(portfolio);
 	   		}
 	   	});
 	};
 	
 	var fixPortfolio = function(portfolio){
-		portfolio.stocks = portfolio["stocks[]"];
-	
-		// if( portfolio["stocks[]"] ) {
-		//   portfolio.stocks = JSON.parse(portfolio["stocks[]"]);
-		// }
-		//portfolio.stocks = JSON.parse(portfolio["stocks[]"]);
-	};
+	    var stocks_w_brackets = portfolio["stocks[]"];
+	    if( stocks_w_brackets ){
+	        if ( typeof stocks_w_brackets === "string" ){
+	            portfolio.stocks = JSON.parse(stocks_w_brackets);
+	        } else{
+	            portfolio.stocks = stocks_w_brackets;
+	        }
+	        delete portfolio["stocks[]"];
+	    }
+	    return portfolio;
+	}
 
-	var getAndShowPortfolio = function(name){
+
+	var getAndShowPortfolio = function(id){
 		$.ajax({
-			url: '/backliftapp/portfolio/' + name,  
+			url: '/backliftapp/portfolios/' + id,  
 			type: "GET",
 			dataType: "json",
 			success: function(portfolio) {
@@ -113,9 +120,9 @@ $(document).ready(function() {
 	   	});
 	};
 
-	var getPortfolioForEdit = function(name){
+	var getPortfolioForEdit = function(id){
 		$.ajax({
-			url: '/backliftapp/portfolio/' + name,   
+			url: '/backliftapp/portfolios/' + id,   
 			type: "GET",
 			dataType: "json",
 			success: function(portfolio) {
@@ -128,7 +135,7 @@ $(document).ready(function() {
 
 	var	updatePortfolio = function(portfolio){		
 		$.ajax({
-			url: '/backliftapp/portfolio/' + portfolio.name,
+			url: '/backliftapp/portfolios/' + portfolio.id,
 			type: "PUT",
 			data: portfolio,
 			dataType: "json",
@@ -138,24 +145,24 @@ $(document).ready(function() {
 	   	});
 	};
 
-	var deletePortfolio = function(name) {
+	var deletePortfolio = function(id) {
 		$.ajax({
-			url: '/backliftapp/portfolio/' + name,
+			url: '/backliftapp/portfolios/' + id,
 			type: "DELETE",
 			dataType: "json",
-			success: function(data) {   //why data here?
-				alert('deleted portfolio: ' + name);  
-				$('#' + name).remove();  
+			success: function() {   
+				alert('deleted portfolio: ' + id);  
+				$('#' + id).remove();  
 			} // End success
 		}); // End .ajax()
 	};
 
 	var deleteStock = function(stock) {
 		$.ajax({
-			url: '/backliftapp/portfolio/' + name,
+			url: '/backliftapp/portfolios/' + name,
 			type: "DELETE",
 			dataType: "json",
-			success: function(data) {
+			success: function() {
 				fixPortfolio(portfolio);
 				alert('deleted stock: ' + stock);
 				$('#' + stock).remove(); 
@@ -178,7 +185,7 @@ $(document).ready(function() {
 		    );
         };  
 
-    //creates Portflio List    
+    //creates Portfolio List    
     var addPortfolioToTable = function(portfolio) {
       $('#portfolioList').append(      	
 	      	'<tr class="portfolioRow" id="' + portfolio.id + '">' + '<td class="portfolioName">' + '<h5>' + portfolio.name + '</h5>' + '</td>' + '<td>' + '<div class="pull-right">' +
@@ -190,9 +197,7 @@ $(document).ready(function() {
 
   	//clear fields in form
   	var clearForm = function() {
-      $(".clearInputs").each(function () {
-        $(this).val("");
-      });
+      $(".clearInputs").val("")
     };
 
     //form validation
@@ -222,15 +227,15 @@ $(document).ready(function() {
 
 	//View Portfolio button
 	$("body").on("click", ".viewPortfolioBtn", function() {
-		var pn = $(this).closest("tr").attr('id')
-		getAndShowPortfolio(pn);
+		var p_id = $(this).closest("tr").attr('id')
+		getAndShowPortfolio(p_id);
 		$(".tablesorter").tablesorter(); 
 	})
 
 	//Edit Portfolio button
 	$("body").on("click", ".editPortfolioBtn", function() {
-		var pn = $(this).closest("tr").attr('id')
-		getPortfolioForEdit(pn);
+		var p_id = $(this).closest("tr").attr('id')
+		getPortfolioForEdit(p_id);
 	})
 	  //in Edit Portfolio modal, Update Portfolio button
 	$("#submitUpdatePortfolioBtn").click(function(){
@@ -245,8 +250,8 @@ $(document).ready(function() {
 
 	//Delete Portfolio button
 	$("body").on("click", ".deletePortfolioBtn", function() {
-		var pn = $(this).closest("tr").attr('id')
-		deletePortfolio(pn);
+		var p_id = $(this).closest("tr").attr('id')
+		deletePortfolio(p_id);
 	})
 
 	//Delete individual stocks from the table and the displayed portfolio

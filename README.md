@@ -1,15 +1,26 @@
 Investment_Research
 ===================
 
-Week 3.0 - 1 day before final project is due
+Project Submission - Last Day of NSS Part 1
 ---------------------------------------------
 
 Main app URL: https://investmentproject-jarus.backliftapp.com/pages/Portfolio_2.html
+JSON file: https://investmentproject-jarus.backliftapp.com/backliftapp/portfolios
 
-Main files to evaluate:
+Main code files to evaluate:
 pages/Portfolio_2.html, 
 assets/js/pages/portfolio.js, 
 assets/js/domain/stock.js
+
+- Unique IDs are now maintained for each portfolio, even if Edit Portfolio is completed
+- All buttons - Create Portfolio, View Portfolio, Edit Portfolio & Delete Portfolio - works properly
+- Stocktwits, S&P 500 Heat Map, Investor Education are all there to enhance the novice investor's UX
+- The project is in good shape EXCEPT that Yahoo's YQL database is unreliable when retrieving data.  The data source will be changed in a future version.
+- Major Backlift issues, particularly around json nested arrays, have been resolved.
+
+
+Week 3.0 - 1 day before final project is due
+---------------------------------------------
 
 - Data is now persistent, i.e. stock portfolios created in prior sessions now loads on (document).ready.    
 - All buttons - Create Portfolio, View Portfolio, Edit Portfolio & Delete Portfolio - are now operational.  However, issues remain with Backlift and YQL, some of which we have designed workarounds, but others which remain outstanding (see below).

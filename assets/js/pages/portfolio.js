@@ -5,16 +5,16 @@ $(document).ready(function() {
 	        name: name,
 	        stocks: []
 	    };
-	    var space = ' ';
-
+	   
 	    //replace all commas and semicolons with spaces (g = global)
+	    var space = ' ';
 	    var stocks = strStocks.replace(/,/g, space).replace(/;/g, space).split(' ');  
 		    for (var i = 0; i < stocks.length; i++) {
 		        if (stocks[i]) {
 		            portfolio.stocks.push(stocks[i]);
 		        }
 		    }
-		    return portfolio;
+	    return portfolio;
 	};
 
 	var createYQLURL = function(portfolio){
@@ -54,13 +54,14 @@ $(document).ready(function() {
 			dataType: "json",
 			success: function(stocksjson) {
 				if ( stocksjson.query.results && stocksjson.query.results.quote ) {
-						for (var i = 0; i < stocksjson.query.count; i++) {  //how did you come up with 'stocksjson.query.count'?
+						for (var i = 0; i < stocksjson.query.count; i++) {  
 							var stock = stocksjson.query.results.quote[i]; //digs into the layers of the json file and returns only the relevant stock data
 							processStock(stock);
-							addStocksToTable(stock);			
+							addStocksToTable(stock);	
+							$("#portfolioAnalysisTable").tablesorter();	//not working properly	
 						}
 				} else {
-					alert("Unfortunately Yahoo's YQL is not dependable and is currently broken. Please try again later.");
+					alert("Unfortunately Yahoo's YQL server is not dependable.  Please try again later.");
 				}
 			} // End success
 		}); // End .ajax()
@@ -79,6 +80,7 @@ $(document).ready(function() {
 	   		}
 	   	});
 	}
+	
 	getPortfolios();
 
 	var createPortfolio = function(portfolio){
@@ -89,6 +91,7 @@ $(document).ready(function() {
 			contentType:'application/json',
 			success: function(portfolio) {    
 	   			showPortfolio(portfolio);
+	   			addPortfolioToTable(portfolio);  
 	   		}
 	   	});
 	};
@@ -126,19 +129,23 @@ $(document).ready(function() {
 			dataType: "json",
 			success: function(portfolio) {
 				fixPortfolio(portfolio);
+				$("#updatePortfolioName").attr("data-portfolioId", id);
 	   			$("#updatePortfolioName").html(portfolio.name);
 	   			$("#updateTickerInput").val(portfolio.stocks.join(' '));
 	   		}
 	   	});
 	};
 
-	var	updatePortfolio = function(portfolio){		
+	var	updatePortfolio = function(portfolio){	
+		var id = $("#updatePortfolioName").attr("data-portfolioId");
+		portfolio.id = id;	
 		$.ajax({
 			url: '/backliftapp/portfolios/' + portfolio.id,
 			type: "PUT",
-			data: portfolio,
-			dataType: "json",
+			data: JSON.stringify(portfolio),
+			contentType:'application/json',
 			success: function() {
+				fixPortfolio(portfolio);
 	   			showPortfolio(portfolio);
 	   		}
 	   	});
@@ -150,7 +157,7 @@ $(document).ready(function() {
 			type: "DELETE",
 			dataType: "json",
 			success: function() {   
-				alert('deleted portfolio: ' + id);  
+				alert('deleted portfolio: ' + $("#" + id + " td h5").html());  
 				$('#' + id).remove();  
 			} // End success
 		}); // End .ajax()
@@ -203,9 +210,6 @@ $(document).ready(function() {
     //form validation
     $("#createPortfolioForm").validate();   //not working properly	
 
-    //tablesorter
-    $("#portfolioAnalysisTable").tablesorter();  //not working properly	
-
 
 	// BUTTON CLICKS ============================================== >
 	
@@ -220,8 +224,6 @@ $(document).ready(function() {
 		// END
 
 		createPortfolio(portfolio);
-		addPortfolioToTable(portfolio);  
-		$(".tablesorter").tablesorter(); 
 		clearForm();
 	});
 
@@ -229,7 +231,6 @@ $(document).ready(function() {
 	$("body").on("click", ".viewPortfolioBtn", function() {
 		var p_id = $(this).closest("tr").attr('id')
 		getAndShowPortfolio(p_id);
-		$(".tablesorter").tablesorter(); 
 	})
 
 	//Edit Portfolio button
@@ -244,7 +245,6 @@ $(document).ready(function() {
 		var portfolio = createPortfolioFromInput($("#updatePortfolioName").html(), $("#updateTickerInput").val());  //
 
 		updatePortfolio(portfolio);
-		$(".tablesorter").tablesorter(); 
 		clearForm();
 	});
 
@@ -261,7 +261,7 @@ $(document).ready(function() {
 	})
 
 	//Cancel and 'x' button
-	$("#cancelBtn").click(function(){
+	$(".cancelBtn").click(function(){
 		clearForm();
 	});
 

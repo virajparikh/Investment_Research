@@ -2,20 +2,12 @@
 <html>
   <head>
     {{$ styles }}
-     <!-- Le styles -->
-   <!--  <link href="assets/css/bootstrap.css" rel="stylesheet">
-    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">    
-    <link href="assets/css/custom.css" rel="stylesheet"> -->
 
     <meta charset="utf-8">
     <title>NSS Project: Viraj's Equity Research App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="Stock research using Yahoo! Finance data" content="">
     <meta name="Viraj Parikh" content="">
-
-        <!-- choose a theme file -->
-
-    <link rel="stylesheet" href="../assets/css/tablesorter_themes/blue/style.css">
 
     
   </head>
@@ -61,10 +53,10 @@
             <thead>
               <tr>
                 <th>Ticker</th>
-                <th>Company</th>
-                <th>Mkt Cap</th>
+                <th>Company Name</th>
+                <th>Market Cap</th>
                 <th>Fwd Price/Earnings</th>
-                <th>Price/Book Value</th>
+                <th>Price/ BookValue</th>
                 <th>ST Momentum</th>
                 <th>LT Momentum</th>
               </tr>
@@ -119,7 +111,7 @@
         <div id="editPortfolioModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="modal-header">
             <button type="button" class="cancelBtn close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="myModalLabel">Edit Portfolio<small> Edit your stock tickers here</small></h3>
+            <h3 id="myModalLabel">Edit Portfolio<small>  Add or Delete your stock tickers here</small></h3>
         </div>
         
         <div class="modal-body">

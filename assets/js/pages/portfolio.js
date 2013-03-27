@@ -83,6 +83,7 @@ $(document).ready(function() {
 	
 	getPortfolios();
 
+//+++++++++++ Create Portfolio ++++++++++++++++++++++++++++++++++++++++++++
 	var createPortfolio = function(portfolio){
 		$.ajax({
 			url: '/backliftapp/portfolios',
@@ -110,6 +111,7 @@ $(document).ready(function() {
 	    return portfolio;
 	};
 
+//+++++++++++ View Portfolio ++++++++++++++++++++++++++++++++++++++++++++
 	var getAndShowPortfolio = function(id){
 		$.ajax({
 			url: '/backliftapp/portfolios/' + id,  
@@ -122,6 +124,7 @@ $(document).ready(function() {
 	   	});
 	};
 
+//+++++++++++ Edit Portfolio ++++++++++++++++++++++++++++++++++++++++++++
 	var getPortfolioForEdit = function(id){
 		$.ajax({
 			url: '/backliftapp/portfolios/' + id,   
@@ -151,6 +154,7 @@ $(document).ready(function() {
 	   	});
 	};
 
+//+++++++++++ Delete Portfolio ++++++++++++++++++++++++++++++++++++++++++++
 	var deletePortfolio = function(id) {
 		$.ajax({
 			url: '/backliftapp/portfolios/' + id,
@@ -163,20 +167,7 @@ $(document).ready(function() {
 		}); // End .ajax()
 	};
 
-	// var deleteStock = function(stock) {
-	// 	$.ajax({
-	// 		url: '/backliftapp/portfolios/' + name,
-	// 		type: "DELETE",
-	// 		dataType: "json",
-	// 		success: function() {
-	// 			fixPortfolio(portfolio);
-	// 			alert('deleted stock: ' + stock);
-	// 			$('#' + stock).remove(); 
-	// 		} // End success
-	// 	}); // End .ajax()
-	//};
-
-	//creates Portfolio Analysis table
+//+++++++++++ Create Portfolio Analysis Table ++++++++++++++++++++++++++++++++++++++++
 	var addStocksToTable = function (stock) {
       $('#stockTable').append(      	
 		      	"<tr class='stockRow' id='" + stock.id + "'>" +
@@ -192,7 +183,7 @@ $(document).ready(function() {
 		    );
         };  
 
-    //creates Portfolio List    
+//+++++++++++ Create Portfolio List ++++++++++++++++++++++++++++++++++++++++   
     var addPortfolioToTable = function(portfolio) {
       $('#portfolioList').append(      	
 	      	'<tr class="portfolioRow" id="' + portfolio.id + '">' + '<td class="portfolioName">' + '<h5>' + portfolio.name + '</h5>' + '</td>' + '<td>' + '<div class="pull-right">' +
@@ -211,11 +202,10 @@ $(document).ready(function() {
     $("#createPortfolioForm").validate();   //not working properly	
 
 
-	// BUTTON CLICKS ============================================== >
+//+++++++++++ Button Clicks +++++++++++++++++++++++++++++++++++++++++++++++++++   
 	
 	//Create Portfolio button
 	$("#createPortfolioBtn").click(function(){
-		
 		var portfolio = createPortfolioFromInput($("#createPortfolioName").val(), $("#addTickerInput").val());
 		//var portfolio = { 
 		//		name: "Tech", 
@@ -254,11 +244,11 @@ $(document).ready(function() {
 		deletePortfolio(p_id);
 	})
 
-	//Delete individual stocks from the table and the displayed portfolio
-	$("body").on("click", ".deleteStockIcon", function(stock) {
-		var st = $(this).closest("tr").attr('id')
-		deleteStock(stock);
-	})
+	// //Delete individual stocks from the table and the displayed portfolio
+	// $("body").on("click", ".deleteStockIcon", function(stock) {
+	// 	var st = $(this).closest("tr").attr('id')
+	// 	deleteStock(stock);
+	// })
 
 	//Cancel and 'x' button
 	$(".cancelBtn").click(function(){
